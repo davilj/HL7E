@@ -1,0 +1,84 @@
+
+ul.message {
+  list-style-type: none;
+}
+
+li.segment {
+  margin : 2px;
+  padding : 5px;
+  border : 1px solid black ;
+  border-radius: 5px;
+  font-size: x-small;
+}
+
+.msh {
+  background-color: #fffae6;
+}
+
+.evn {
+  background-color: #ffe6f2;
+}
+
+.pid {
+  background-color: #e6e6ff;
+}
+
+.orc {
+  background-color: #ecc6ec;
+}
+
+.rxa {
+  background-color: #e6ffe6;
+}
+
+.pv1 {
+  background-color: #e0e0eb
+}
+
+.pv2 {
+  background-color: #c2c2d6
+}
+
+.al1 {
+  background-color: #ffe6cc
+}
+
+.pd1 {
+  background-color: #e6ffe6;
+}
+
+.nk1 {
+  background-color: #ebebe0;
+}
+
+.dg1 {
+  background-color: #ffe0cc;
+}
+
+.pr1 {
+  background-color: #f2d9d9;
+}
+
+.z_segment_style {
+  font-style: italic;
+}
+
+.selected {
+  font-weight: bold;
+  
+  box-shadow: 0px 0px 5px #888888;
+}
+
+.caretCell {
+  background-color: none;
+  
+}
+
+.componentCell {
+  margin : 2px;
+  padding : 2px;
+  border : 1px solid black ;
+  border-radius: 5px;
+  font-size: x-small;
+}
+
