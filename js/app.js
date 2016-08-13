@@ -103,11 +103,9 @@ function loadFileEntry(_chosenEntry) {
   chosenEntry.file(function(file) {
     readAsText(chosenEntry, function(result) {
       HL7.parseMsg(result, function(parsedMessage) {
-        //console.log(parsedMessage);
-        HL7_Formatter.setMessage(parsedMessage);
         //document.getElementById('#msg_content').innerHTML(HL7_Formatter.formatMessage(parsedMessage));
-        var html = HL7_Formatter.formatMessage(parsedMessage);
-        DOMHelpers.addElement("msg_content","div","test", html);
+        var html_ul = HL7_Formatter.formatMessage(parsedMessage);
+        DOMHelpers.addElementAsComponent("msg_content",html_ul);
         DOMHelpers.removeChildren("msg_segment");
         for(var segmentIndex in parsedMessage.segments) {
           var segmentName = "segment_" + segmentIndex;

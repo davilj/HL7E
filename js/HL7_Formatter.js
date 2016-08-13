@@ -1,15 +1,11 @@
 /*
 */
 var HL7_Formatter = {};
-HL7_Formatter.message={};
 
-HL7_Formatter.setMessage = function(hl7Msg) {
-  HL7_Formatter.message = hl7Msg;
-};
-
-HL7_Formatter.formatMessage = function(segmentClickListener) {
-  var segmentArr = HL7_Formatter.message.segments.map(HL7_Formatter.formatSegment);
-  var segmentTxt = "<ul class='message'>";
+HL7_Formatter.formatMessage = function(message) {
+  var segmentArr = message.segments.map(HL7_Formatter.formatSegment);
+  var ul = document.createElement('ul');
+  ul.className='message';
   for (var index in segmentArr) {
     var segment = segmentArr[index];
     var name = HL7_Formatter.getSegmentName(segment);
@@ -18,10 +14,15 @@ HL7_Formatter.formatMessage = function(segmentClickListener) {
       zsegment=" z_segment_style";
       name=name.substring(1);
     }
-    segmentTxt += "<li class='segment " + name + zsegment + "' id='segment_"+index+"'>" + segmentArr[index] + "</li>";
+    var className = 'segment ' + name + zsegment;
+    //segmentTxt += "<li class='segment " + name + zsegment + "' id='segment_"+index+"'>" + segmentArr[index] + "</li>";
+    var li = document.createElement('li');
+    li.className=className;
+    li.id=('segment_' + index);
+    li.appendChild(document.createTextNode(segmentArr[index]));
+    ul.appendChild(li);
   }
-  segmentTxt = segmentTxt + "</ul>";
-  return segmentTxt;
+  return ul;
 };
 
 HL7_Formatter.formatSegment = function(segment) {
