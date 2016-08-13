@@ -41,7 +41,7 @@ HL7_Formatter.getSegmentName = function(segment) {
   return segmentName.toLowerCase();
 };
 
-HL7_Formatter.formatSegmentInDetail = function(segment) {
+HL7_Formatter.formatSegmentInDetail = function(segment, segmentNameHoverHandler, segmentNameOutHandler) {
   var handleMouseOver=function() {
     console.log("handling mouse over");
   };
@@ -54,7 +54,7 @@ HL7_Formatter.formatSegmentInDetail = function(segment) {
     var indexNumber = parseInt(index) + 1;
     var tableRow = document.createElement('tr');
     tableRow.id=('segment_' + index);
-    HL7_Formatter.formatFieldInDetail(tableRow, segmentName, indexNumber, field);
+    HL7_Formatter.formatFieldInDetail(segmentNameHoverHandler, segmentNameOutHandler, tableRow, segmentName, indexNumber, field);
     tbdy.appendChild(tableRow);
     
   }
@@ -63,12 +63,7 @@ HL7_Formatter.formatSegmentInDetail = function(segment) {
 };
 
 
-HL7_Formatter.handleMouseOver = function() {
-  console.log("Handle mouse over externally");
-};
-
-
-HL7_Formatter.formatFieldInDetail = function(tableRow, name, index , components) {
+HL7_Formatter.formatFieldInDetail = function(segmentNameHoverHandler, segmentNameOutHandler, tableRow, name, index , components) {
   var className = 'componentCell ' + name;
   var numberOfComponents = components.length;
   var addCell = function(content, _class) {
@@ -78,13 +73,40 @@ HL7_Formatter.formatFieldInDetail = function(tableRow, name, index , components)
     return tableCell;
   };
   
-  tableRow.appendChild(addCell((name + "-" + index), className));
+  var segmentName = name + "-" + index;
+  var hoverHandlerFactory=function(name, segmentNameHoverHandler) {
+    return function() {
+      segmentNameHoverHandler(segmentName);
+    };
+  };
+  
+  var hoverOutHandlerFactory=function(name, segmentNameOutHandler) {
+    return function() {
+      segmentNameOutHandler(segmentName);
+    };
+  };
+  
+  var tdMain = addCell((name + "-" + index), className);
+  tdMain.addEventListener("mouseenter", hoverHandlerFactory(name, segmentNameHoverHandler), false);
+  tdMain.addEventListener("mouseleave", hoverOutHandlerFactory(name, segmentNameOutHandler), false);
+  tableRow.appendChild(tdMain);
   for (var compIndex =0; compIndex<numberOfComponents; compIndex++) {
     if (compIndex!==0) {
       tableRow.appendChild(addCell('^',''));
     }
     tableRow.appendChild(addCell(components[compIndex], className));
   }
+};
+
+HL7_Formatter.setSegmentInfo=function(segmentId, segmentName, segmentDesc) {
+  document.querySelector('#segmentId').innerHTML="<h2>" + segmentId + "</h2>";
+  document.querySelector('#segmentName').innerHTML="<h4>" + segmentName + "</h4>";
+  document.querySelector('#segmentDesc').innerHTML=segmentDesc;
+  document.querySelector('#segmentInfo').className='info';
+};
+
+HL7_Formatter.hideSegmentInfo=function() {
+  document.querySelector('#segmentInfo').className='info hide';
 };
 
 

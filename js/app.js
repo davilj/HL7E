@@ -121,6 +121,16 @@ function loadFileEntry(_chosenEntry) {
 
 function segmentClickFactory(segmentIndex, parsedMessage) {
   return function(){
+            var segmentNameHoverHandler = function(name) {
+              if (name==='') return;
+              var segmentInfo = DB.getSegmentInfo(name);
+              HL7_Formatter.setSegmentInfo(name, segmentInfo[0], segmentInfo[1]);
+            };
+            var segmentNameOutHandler = function(name) {
+              console.log('Handling out for: ' + name);
+              if (name==='') return;
+              HL7_Formatter.hideSegmentInfo();
+            };
             //remove all selected CSS
             var li_segments = document.getElementsByClassName('segment');
             var numberOfSegments = li_segments.length;
@@ -132,9 +142,9 @@ function segmentClickFactory(segmentIndex, parsedMessage) {
               }
               li_segment.className=cssClasses;
             }
-             var segment = parsedMessage.segments[segmentIndex];
-             var segmentHTML = HL7_Formatter.formatSegmentInDetail(segment);
-             DOMHelpers.addElementAsComponent("msg_segment",segmentHTML);
+            var segment = parsedMessage.segments[segmentIndex];
+            var segmentHTMLTable = HL7_Formatter.formatSegmentInDetail(segment, segmentNameHoverHandler, segmentNameOutHandler);
+            DOMHelpers.addElementAsComponent("msg_segment",segmentHTMLTable);
   };
 }
 
@@ -177,6 +187,7 @@ chooseFileButton.addEventListener('click', function(e) {
   });
 });
 
+/*
 saveFileButton.addEventListener('click', function(e) {
   var config = {type: 'saveFile', suggestedName: chosenEntry.name};
   chrome.fileSystem.chooseEntry(config, function(writableEntry) {
@@ -186,6 +197,7 @@ saveFileButton.addEventListener('click', function(e) {
     });
   });
 });
+*/
 
 // Support dropping a single file onto this app.
 var dnd = new DnDFileController('body', function(data) {

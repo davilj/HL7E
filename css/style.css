@@ -65,7 +65,6 @@ li.segment {
 
 .selected {
   font-weight: bold;
-  
   box-shadow: 0px 0px 5px #888888;
 }
 
@@ -80,5 +79,30 @@ li.segment {
   border : 1px solid black ;
   border-radius: 5px;
   font-size: x-small;
+}
+
+.hide {
+  display: none;
+}
+
+.info {
+  position: absolute;
+  border: 1px solid black;
+  border-radius: 5px;
+  margin : 2px;
+  padding : 10px;
+  box-shadow: 0px 0px 5px #888888;
+  background-color: white;
+  float : right;
+  width : 50%;
+}
+
+.info_desc {
+  border: 1px solid white;
+  border-radius: 5px;
+  margin : 2px;
+  padding : 2px;
+  
+  background-color: #e6f2ff;
 }
 
