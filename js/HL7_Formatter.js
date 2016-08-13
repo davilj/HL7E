@@ -45,14 +45,20 @@ HL7_Formatter.formatSegmentInDetail = function(segment) {
     console.log("handling mouse over");
   };
   var segmentName = segment.segmentName;
-  var segmentTxt = "<table class='message'>";
+  var tbl = document.createElement('table');
+  //tbl.style.width = '100%';
+  var tbdy = document.createElement('tbody');
   for (var index in segment.fields) {
     var field = segment.fields[index];
     var indexNumber = parseInt(index) + 1;
-    segmentTxt += "<tr id='segment_"+index+"' >" + HL7_Formatter.formatFieldInDetail(segmentName, indexNumber, field) + "</tr>";
+    var tableRow = document.createElement('tr');
+    tableRow.id=('segment_' + index);
+    HL7_Formatter.formatFieldInDetail(tableRow, segmentName, indexNumber, field);
+    tbdy.appendChild(tableRow);
+    
   }
-  segmentTxt = segmentTxt + "</table>";
-  return segmentTxt;
+  tbl.appendChild(tbdy);
+  return tbl;
 };
 
 
@@ -61,13 +67,23 @@ HL7_Formatter.handleMouseOver = function() {
 };
 
 
-HL7_Formatter.formatFieldInDetail = function(name, index , components) {
-  var formatContent = function(content) {
-    return "<td class='componentCell " + name + "' >" + content + "</td>";
+HL7_Formatter.formatFieldInDetail = function(tableRow, name, index , components) {
+  var className = 'componentCell ' + name;
+  var numberOfComponents = components.length;
+  var addCell = function(content, _class) {
+    var tableCell = document.createElement('td');
+    tableCell.appendChild(document.createTextNode(content));
+    tableCell.className = _class;
+    return tableCell;
   };
   
-  var componentArr = components.map(formatContent);
-  return formatContent(name + "-" + index) + (componentArr.join("<td class='caretCell'>^</td>"));
+  tableRow.appendChild(addCell((name + "-" + index), className));
+  for (var compIndex =0; compIndex<numberOfComponents; compIndex++) {
+    if (compIndex!==0) {
+      tableRow.appendChild(addCell('^',''));
+    }
+    tableRow.appendChild(addCell(components[compIndex], className));
+  }
 };
 
 

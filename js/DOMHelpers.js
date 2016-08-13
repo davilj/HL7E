@@ -1,7 +1,13 @@
 var DOMHelpers = {};
 
+DOMHelpers.addElementAsComponent=function(parentId, element) {
+  DOMHelpers.removeChildren(parentId);
+  var p = document.getElementById(parentId);
+  p.appendChild(element);
+};
+
 DOMHelpers.addElement = function(parentId, elementTag, elementId, html) {
-    DOMHelpers.removeChildren(parentId, elementTag, elementId, html);
+    DOMHelpers.removeChildren(parentId);
     var p = document.getElementById(parentId);
     var newElement = document.createElement(elementTag);
     newElement.setAttribute('id', elementId);

@@ -136,7 +136,7 @@ function segmentClickFactory(segmentIndex, parsedMessage) {
             }
              var segment = parsedMessage.segments[segmentIndex];
              var segmentHTML = HL7_Formatter.formatSegmentInDetail(segment);
-             DOMHelpers.addElement("msg_segment","div","test", segmentHTML);
+             DOMHelpers.addElementAsComponent("msg_segment",segmentHTML);
   };
 }
 
