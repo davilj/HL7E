@@ -6,15 +6,6 @@ DOMHelpers.addElementAsComponent=function(parentId, element) {
   p.appendChild(element);
 };
 
-DOMHelpers.addElement = function(parentId, elementTag, elementId, html) {
-    DOMHelpers.removeChildren(parentId);
-    var p = document.getElementById(parentId);
-    var newElement = document.createElement(elementTag);
-    newElement.setAttribute('id', elementId);
-    newElement.innerHTML = html;
-    p.appendChild(newElement);
-};
-
 DOMHelpers.removeChildren = function(parentId) {
   var p = document.getElementById(parentId);
   var fc = p.firstChild;
