@@ -70,7 +70,7 @@ li.segment {
 
 .caretCell {
   background-color: none;
-  
+
 }
 
 .componentCell {
@@ -93,6 +93,7 @@ li.segment {
   padding : 10px;
   box-shadow: 0px 0px 5px #888888;
   background-color: white;
+  opacity: 0.9;
   float : right;
   width : 50%;
 }
@@ -102,7 +103,6 @@ li.segment {
   border-radius: 5px;
   margin : 2px;
   padding : 2px;
-  
+
   background-color: #e6f2ff;
 }
-

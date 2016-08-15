@@ -121,10 +121,10 @@ function loadFileEntry(_chosenEntry) {
 
 function segmentClickFactory(segmentIndex, parsedMessage) {
   return function(){
-            var segmentNameHoverHandler = function(name) {
+            var segmentNameHoverHandler = function(coord, name) {
               if (name==='') return;
               var segmentInfo = DB.getSegmentInfo(name);
-              HL7_Formatter.setSegmentInfo(name, segmentInfo[0], segmentInfo[1]);
+              HL7_Formatter.setSegmentInfo(coord, name, segmentInfo[0], segmentInfo[1]);
             };
             var segmentNameOutHandler = function(name) {
               console.log('Handling out for: ' + name);

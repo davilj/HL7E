@@ -74,21 +74,15 @@ HL7_Formatter.formatFieldInDetail = function(segmentNameHoverHandler, segmentNam
   };
   
   var segmentName = name + "-" + index;
-  var hoverHandlerFactory=function(name, segmentNameHoverHandler) {
-    return function() {
-      segmentNameHoverHandler(segmentName);
-    };
-  };
-  
-  var hoverOutHandlerFactory=function(name, segmentNameOutHandler) {
-    return function() {
-      segmentNameOutHandler(segmentName);
-    };
-  };
-  
   var tdMain = addCell((name + "-" + index), className);
-  tdMain.addEventListener("mouseenter", hoverHandlerFactory(name, segmentNameHoverHandler), false);
-  tdMain.addEventListener("mouseleave", hoverOutHandlerFactory(name, segmentNameOutHandler), false);
+  tdMain.addEventListener("mouseenter", function(event) {
+    console.log(event);
+    var coord = [event.clientX, event.clientY];
+    segmentNameHoverHandler(coord, segmentName);
+  }, false);
+  tdMain.addEventListener("mouseleave", function(event) {
+    segmentNameOutHandler(segmentName);
+  }, false);
   tableRow.appendChild(tdMain);
   for (var compIndex =0; compIndex<numberOfComponents; compIndex++) {
     if (compIndex!==0) {
@@ -98,7 +92,12 @@ HL7_Formatter.formatFieldInDetail = function(segmentNameHoverHandler, segmentNam
   }
 };
 
-HL7_Formatter.setSegmentInfo=function(segmentId, segmentName, segmentDesc) {
+HL7_Formatter.setSegmentInfo=function(coord, segmentId, segmentName, segmentDesc) {
+  console.log(coord);
+  var d = document.querySelector('#segmentInfo');
+  d.style.position = "absolute";
+  d.style.left = '50px';
+  d.style.top = coord[1]+'px';
   document.querySelector('#segmentId').innerHTML="<h2>" + segmentId + "</h2>";
   document.querySelector('#segmentName').innerHTML="<h4>" + segmentName + "</h4>";
   document.querySelector('#segmentDesc').innerHTML=segmentDesc;

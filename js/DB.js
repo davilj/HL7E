@@ -17,3 +17,6 @@ function includeJS(jsFilePath) {
 }
 
 includeJS("../data/msh.js");
+includeJS("../data/nk1.js");
+includeJS("../data/obx.js");
+includeJS("../data/pid.js");
