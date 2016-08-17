@@ -23,7 +23,7 @@ function displayEntryData(theEntry) {
     });
     theEntry.getMetadata(function(data) {
       document.querySelector('#file_size').textContent = data.size;
-    });    
+    });
   }
   else {
     document.querySelector('#file_path').value = theEntry.fullPath;
@@ -63,7 +63,7 @@ function writeFileEntry(writableEntry, opt_blob, callback) {
         writer.seek(0);
         writer.write(opt_blob);
       });
-    } 
+    }
     else {
       chosenEntry.file(function(file) {
         writer.truncate(file.fileSize);
@@ -89,7 +89,7 @@ function waitForIO(writer, callback) {
       console.error("Write operation taking too long, aborting!"+
         " (current writer readyState is "+writer.readyState+")");
       writer.abort();
-    } 
+    }
     else {
       callback();
     }
@@ -151,7 +151,7 @@ function segmentClickFactory(segmentIndex, parsedMessage) {
 function loadInitialFile(launchData) {
   if (launchData && launchData.items && launchData.items[0]) {
     loadFileEntry(launchData.items[0].entry);
-  } 
+  }
   else {
     // see if the app retained access to an earlier file or directory
     chrome.storage.local.get('chosenFile', function(items) {
@@ -183,6 +183,7 @@ chooseFileButton.addEventListener('click', function(e) {
     }
     // use local storage to retain access to this file
     chrome.storage.local.set({'chosenFile': chrome.fileSystem.retainEntry(theEntry)});
+    displayEntryData(theEntry);
     loadFileEntry(theEntry);
   });
 });
@@ -215,7 +216,7 @@ var dnd = new DnDFileController('body', function(data) {
   if (!chosenEntry) {
     output.textContent = "Sorry. That's not a text file.";
     return;
-  } 
+  }
   else {
     output.textContent = "";
   }
