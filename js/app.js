@@ -9,6 +9,8 @@ var saveFileButton = document.querySelector('#save_file');
 var output = document.querySelector('output');
 var textarea = document.querySelector('textarea');
 var msgContent = document.querySelector('#msg_content');
+var bodyTag = document.querySelector('body');
+var cancelTag = document.querySelector('#cancel_msg');
 
 
 
@@ -109,7 +111,7 @@ function loadFileEntry(_chosenEntry) {
         DOMHelpers.removeChildren("msg_segment");
         for(var segmentIndex in parsedMessage.segments) {
           var segmentName = "segment_" + segmentIndex;
-          document.getElementById(segmentName).addEventListener("click", segmentClickFactory(segmentIndex, parsedMessage));
+          document.getElementById(segmentName).addEventListener("click", segmentClickFactory(segmentIndex, parsedMessage), false);
         }
       });
     });
@@ -120,7 +122,7 @@ function loadFileEntry(_chosenEntry) {
 }
 
 function segmentClickFactory(segmentIndex, parsedMessage) {
-  return function(){
+  return function(e){
             var segmentNameHoverHandler = function(coord, name) {
               if (name==='') return;
               var segmentInfo = DB.getSegmentInfo(name);
@@ -145,6 +147,13 @@ function segmentClickFactory(segmentIndex, parsedMessage) {
             var segment = parsedMessage.segments[segmentIndex];
             var segmentHTMLTable = HL7_Formatter.formatSegmentInDetail(segment, segmentNameHoverHandler, segmentNameOutHandler);
             DOMHelpers.addElementAsComponent("msg_segment",segmentHTMLTable);
+            console.log("Screen......");
+            console.log(screen.availHeight);
+            var msg_segment_wndW = document.getElementById('msg_segment_wnd');
+            var height = msg_segment_wndW.offsetHeight;
+            var rect = msg_segment_wndW.getBoundingClientRect();
+            console.log(rect.top, rect.right, rect.bottom, rect.left);
+            DOMHelpers.show("msg_segment_wnd");
   };
 }
 
@@ -188,6 +197,10 @@ chooseFileButton.addEventListener('click', function(e) {
   });
 });
 
+cancelTag.addEventListener('click', function(e) {
+  DOMHelpers.hide("msg_segment_wnd");
+});
+
 /*
 saveFileButton.addEventListener('click', function(e) {
   var config = {type: 'saveFile', suggestedName: chosenEntry.name};
@@ -229,4 +242,4 @@ var dnd = new DnDFileController('body', function(data) {
   displayEntryData(chosenEntry);
 });
 
-loadInitialFile(launchData);
+//loadInitialFile(launchData);

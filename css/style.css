@@ -11,6 +11,16 @@ li.segment {
   font-size: x-small;
 }
 
+#msg_segment_wnd {
+  position: absolute;
+  left : 150px;
+  top : 150px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px #888888;
+}
+
 .msh {
   background-color: #fffae6;
 }
@@ -96,6 +106,7 @@ li.segment {
   opacity: 0.9;
   float : right;
   width : 50%;
+  left : 200px;
 }
 
 .info_desc {

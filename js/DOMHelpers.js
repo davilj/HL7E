@@ -14,3 +14,13 @@ DOMHelpers.removeChildren = function(parentId) {
     fc = p.firstChild;
   }
 };
+
+DOMHelpers.show=function(id) {
+  var p = document.getElementById(id);
+  p.style.display = 'block';
+};
+
+DOMHelpers.hide=function(id) {
+  var p = document.getElementById(id);
+  p.style.display = 'none';
+};
