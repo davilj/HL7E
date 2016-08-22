@@ -144,15 +144,28 @@ function segmentClickFactory(segmentIndex, parsedMessage) {
               }
               li_segment.className=cssClasses;
             }
+           
             var segment = parsedMessage.segments[segmentIndex];
+            var msg_segment_wndW = document.getElementById('msg_segment_wnd');
+            msg_segment_wndW.style.width = '';
+            msg_segment_wndW.style.height = '';
+            
             var segmentHTMLTable = HL7_Formatter.formatSegmentInDetail(segment, segmentNameHoverHandler, segmentNameOutHandler);
             DOMHelpers.addElementAsComponent("msg_segment",segmentHTMLTable);
-            console.log("Screen......");
-            console.log(screen.availHeight);
-            var msg_segment_wndW = document.getElementById('msg_segment_wnd');
-            var height = msg_segment_wndW.offsetHeight;
+            var height = screen.availHeight;
+            var width = screen.availWidth;
+            
             var rect = msg_segment_wndW.getBoundingClientRect();
-            console.log(rect.top, rect.right, rect.bottom, rect.left);
+            console.log(rect);
+            var windowHeight = rect.bottom-rect.top;
+            var windowWidth = rect.right-rect.left;
+            if (windowHeight>height) {
+              console.log("make window smaller");
+              msg_segment_wndW.style.height = "70%";
+            } 
+            if (windowWidth>width) {
+              msg_segment_wndW.style.width = "80%";
+            }
             DOMHelpers.show("msg_segment_wnd");
   };
 }
