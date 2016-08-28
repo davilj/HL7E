@@ -16,21 +16,6 @@ function errorHandler(e) {
   console.error(e);
 }
 
-function displayEntryData(theEntry) {
-  if (theEntry.isFile) {
-    chrome.fileSystem.getDisplayPath(theEntry, function(path) {
-      document.querySelector('#file_path').value = path;
-    });
-    theEntry.getMetadata(function(data) {
-      document.querySelector('#file_size').textContent = data.size;
-    });
-  }
-  else {
-    document.querySelector('#file_path').value = theEntry.fullPath;
-    document.querySelector('#file_size').textContent = "N/A";
-  }
-}
-
 function readAsText(fileEntry, callback) {
   fileEntry.file(function(file) {
     var reader = new FileReader();
@@ -107,8 +92,8 @@ function loadFileEntry(_chosenEntry) {
       });
     });
     // Update display.
-    saveFileButton.disabled = false; // allow the user to save the content
-    displayEntryData(chosenEntry);
+    //saveFileButton.disabled = false; // allow the user to save the content
+    View.displayEntryData(chosenEntry);
   });
 }
 
@@ -147,7 +132,8 @@ chooseFileButton.addEventListener('click', function(e) {
     }
     // use local storage to retain access to this file
     chrome.storage.local.set({'chosenFile': chrome.fileSystem.retainEntry(theEntry)});
-    displayEntryData(theEntry);
+    //TODO 2
+    //View.displayEntryData(theEntry);
     loadFileEntry(theEntry);
   });
 });
@@ -163,34 +149,5 @@ saveFileButton.addEventListener('click', function(e) {
   });
 });
 */
-
-// Support dropping a single file onto this app.
-var dnd = new DnDFileController('body', function(data) {
-  chosenEntry = null;
-  for (var i = 0; i < data.items.length; i++) {
-    var item = data.items[i];
-    if (item.kind == 'file' &&
-        item.type.match('text/*') &&
-        item.webkitGetAsEntry()) {
-      chosenEntry = item.webkitGetAsEntry();
-      break;
-    }
-  }
-
-  if (!chosenEntry) {
-    output.textContent = "Sorry. That's not a text file.";
-    return;
-  }
-  else {
-    output.textContent = "";
-  }
-
-  readAsText(chosenEntry, function(result) {
-    textarea.value = result;
-  });
-  // Update display.
-  saveFileButton.disabled = false;
-  displayEntryData(chosenEntry);
-});
 
 loadInitialFile(launchData);

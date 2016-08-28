@@ -40,4 +40,19 @@ View.segmentClickFactory=function(segmentIndex, parsedMessage) {
   };
 };
 
+View.displayEntryData=function(theEntry) {
+  if (theEntry.isFile) {
+    chrome.fileSystem.getDisplayPath(theEntry, function(path) {
+      document.querySelector('#file_path').value = path;
+    });
+    theEntry.getMetadata(function(data) {
+      document.querySelector('#file_size').textContent = data.size;
+    });
+  }
+  else {
+    document.querySelector('#file_path').value = theEntry.fullPath;
+    document.querySelector('#file_size').textContent = "N/A";
+  }
+};
+
 
