@@ -108,16 +108,20 @@ HL7_Formatter.hideSegmentInfo=function() {
   document.querySelector('#segmentInfo').className='info hide';
 };
 
-HL7_Formatter.formatSegmentSelector=function(parsedMessage) {
-  var segmentsSelection = parsedMessage.segments.map(function(segment) {
+HL7_Formatter.formatSegmentSelector=function(index, parsedMessage) {
+  var segmentsSelections = parsedMessage.segments.map(function(segment) {
     var divTag = document.createElement('div');
     var t = document.createTextNode(segment.segmentName);
     divTag.appendChild(t);
     divTag.className='segmentSelector';
     return divTag;
   });
-  console.log(segmentsSelection);
-  return segmentsSelection;
+  
+  var segmentSelectionDiv = segmentsSelections[index];
+  segmentSelectionDiv.className='segmentSelector selectorSelected';
+  
+  console.log(segmentsSelections);
+  return segmentsSelections;
   
 };
 

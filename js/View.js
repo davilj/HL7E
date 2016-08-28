@@ -5,6 +5,7 @@ View.displayMessage = function(parsedMessage) {
   var html_ul = HL7_Formatter.formatMessage(parsedMessage);
   DOMHelpers.addElementAsComponent("msg_content",html_ul);
   DOMHelpers.removeChildren("msg_segment");
+  DOMHelpers.hide("msg_segment_wnd");
   for(var segmentIndex in parsedMessage.segments) {
     var segmentName = "segment_" + segmentIndex;
     document.getElementById(segmentName).addEventListener("click", View.segmentClickFactory(segmentIndex, parsedMessage));
@@ -35,7 +36,7 @@ View.segmentClickFactory=function(segmentIndex, parsedMessage) {
               li_segment.className=cssClasses;
             }
             
-            var segmentSelectors = HL7_Formatter.formatSegmentSelector(parsedMessage);
+            var segmentSelectors = HL7_Formatter.formatSegmentSelector(segmentIndex, parsedMessage);
             DOMHelpers.addElementsToId("msg_segment_selector",segmentSelectors);
             
             var segment = parsedMessage.segments[segmentIndex];
