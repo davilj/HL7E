@@ -103,49 +103,13 @@ function loadFileEntry(_chosenEntry) {
   chosenEntry.file(function(file) {
     readAsText(chosenEntry, function(result) {
       HL7.parseMsg(result, function(parsedMessage) {
-        //document.getElementById('#msg_content').innerHTML(HL7_Formatter.formatMessage(parsedMessage));
-        var html_ul = HL7_Formatter.formatMessage(parsedMessage);
-        DOMHelpers.addElementAsComponent("msg_content",html_ul);
-        DOMHelpers.removeChildren("msg_segment");
-        for(var segmentIndex in parsedMessage.segments) {
-          var segmentName = "segment_" + segmentIndex;
-          document.getElementById(segmentName).addEventListener("click", segmentClickFactory(segmentIndex, parsedMessage));
-        }
+        View.displayMessage(parsedMessage);
       });
     });
     // Update display.
     saveFileButton.disabled = false; // allow the user to save the content
     displayEntryData(chosenEntry);
   });
-}
-
-function segmentClickFactory(segmentIndex, parsedMessage) {
-  return function(){
-            var segmentNameHoverHandler = function(coord, name) {
-              if (name==='') return;
-              var segmentInfo = DB.getSegmentInfo(name);
-              HL7_Formatter.setSegmentInfo(coord, name, segmentInfo[0], segmentInfo[1]);
-            };
-            var segmentNameOutHandler = function(name) {
-              console.log('Handling out for: ' + name);
-              if (name==='') return;
-              HL7_Formatter.hideSegmentInfo();
-            };
-            //remove all selected CSS
-            var li_segments = document.getElementsByClassName('segment');
-            var numberOfSegments = li_segments.length;
-            for (var li_index=0; li_index<numberOfSegments; li_index++) {
-              li_segment = li_segments[li_index];
-              var cssClasses = li_segment.className.replace('selected','').trim();
-              if (li_index==segmentIndex) {
-                cssClasses = cssClasses + " selected";
-              }
-              li_segment.className=cssClasses;
-            }
-            var segment = parsedMessage.segments[segmentIndex];
-            var segmentHTMLTable = HL7_Formatter.formatSegmentInDetail(segment, segmentNameHoverHandler, segmentNameOutHandler);
-            DOMHelpers.addElementAsComponent("msg_segment",segmentHTMLTable);
-  };
 }
 
 function loadInitialFile(launchData) {
