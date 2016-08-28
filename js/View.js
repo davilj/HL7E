@@ -1,5 +1,6 @@
 var View = {};
 
+//display each line of file
 View.displayMessage = function(parsedMessage) {
   var html_ul = HL7_Formatter.formatMessage(parsedMessage);
   DOMHelpers.addElementAsComponent("msg_content",html_ul);
@@ -33,13 +34,20 @@ View.segmentClickFactory=function(segmentIndex, parsedMessage) {
               }
               li_segment.className=cssClasses;
             }
+            
+            var segmentSelectors = HL7_Formatter.formatSegmentSelector(parsedMessage);
+            DOMHelpers.addElementsToId("msg_segment_selector",segmentSelectors);
+            
             var segment = parsedMessage.segments[segmentIndex];
             var segmentHTMLTable = HL7_Formatter.formatSegmentInDetail(segment, segmentNameHoverHandler, segmentNameOutHandler);
             DOMHelpers.addElementAsComponent("msg_segment",segmentHTMLTable);
+            
+            
             DOMHelpers.show("msg_segment_wnd");
   };
 };
 
+//display selected file
 View.displayEntryData=function(theEntry) {
   if (theEntry.isFile) {
     chrome.fileSystem.getDisplayPath(theEntry, function(path) {
