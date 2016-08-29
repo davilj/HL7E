@@ -14,16 +14,23 @@ View.displayMessage = function(parsedMessage) {
 
 View.segmentClickFactory=function(segmentIndex, parsedMessage) {
   return function(){
-            var segmentNameHoverHandler = function(coord, name) {
+            var fieldNameHoverHandler = function(coord, name) {
               if (name==='') return;
               var segmentInfo = DB.getSegmentInfo(name);
               HL7_Formatter.setSegmentInfo(coord, name, segmentInfo[0], segmentInfo[1]);
             };
-            var segmentNameOutHandler = function(name) {
+            var fieldNameOutHandler = function(name) {
               console.log('Handling out for: ' + name);
               if (name==='') return;
               HL7_Formatter.hideSegmentInfo();
             };
+            
+            //handle selecting segment name
+            var segmentSelectHandler = function(segment) {
+                console.log("segmentSelectHandler");
+                console.log(segment);
+            };
+            
             //remove all selected CSS
             var li_segments = document.getElementsByClassName('segment');
             var numberOfSegments = li_segments.length;
@@ -36,11 +43,11 @@ View.segmentClickFactory=function(segmentIndex, parsedMessage) {
               li_segment.className=cssClasses;
             }
             
-            var segmentSelectors = HL7_Formatter.formatSegmentSelector(segmentIndex, parsedMessage);
+            var segmentSelectors = HL7_Formatter.formatSegmentSelector(segmentIndex, parsedMessage, segmentSelectHandler);
             DOMHelpers.addElementsToId("msg_segment_selector",segmentSelectors);
             
             var segment = parsedMessage.segments[segmentIndex];
-            var segmentHTMLTable = HL7_Formatter.formatSegmentInDetail(segment, segmentNameHoverHandler, segmentNameOutHandler);
+            var segmentHTMLTable = HL7_Formatter.formatSegmentInDetail(segment, fieldNameHoverHandler, fieldNameOutHandler);
             DOMHelpers.addElementAsComponent("msg_segment",segmentHTMLTable);
             
             

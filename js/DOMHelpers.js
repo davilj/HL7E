@@ -33,3 +33,13 @@ DOMHelpers.show=function(elementId) {
   var p = document.getElementById(elementId);
   p.style.display = "block";
 };
+
+DOMHelpers.removeClassfromClass = function(className, removeClassName) {
+  var elements = document.getElementsByClassName(className);
+  var numberOfElements = elements.length;
+  for (var index=0; index<numberOfElements; index++) {
+    element = elements[index];
+    var cssClasses = element.className.replace(removeClassName,'').trim();
+    element.className=cssClasses;
+  }
+};
