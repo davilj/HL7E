@@ -29,6 +29,7 @@ View.segmentClickFactory=function(segmentIndex, parsedMessage) {
             var segmentSelectHandler = function(segment) {
                 console.log("segmentSelectHandler");
                 console.log(segment);
+                
             };
             
             //remove all selected CSS
