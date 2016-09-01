@@ -7,11 +7,22 @@ DOMHelpers.addElementAsComponent=function(parentId, element) {
 };
 
 DOMHelpers.addElementsToId=function(parentId, elementArr) {
-  DOMHelpers.removeChildren(parentId);
+  DOMHelpers.hideChildren(parentId);
   var p = document.getElementById(parentId);
   for (var elementIndex in elementArr) {
     element = elementArr[elementIndex];
     p.appendChild(element);
+  }
+};
+
+DOMHelpers.hideChildren = function(parentId) {
+  var p = document.getElementById(parentId);
+  var children = p.childNotes;
+  var numberOfChildren = children.length;
+  var index=0;
+  for (index; index<numberOfChildren; index++) {
+    var child = children[index];
+    child.style.display = "none";
   }
 };
 
@@ -43,3 +54,5 @@ DOMHelpers.removeClassfromClass = function(className, removeClassName) {
     element.className=cssClasses;
   }
 };
+
+

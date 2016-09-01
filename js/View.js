@@ -5,54 +5,99 @@ View.displayMessage = function(parsedMessage) {
   var html_ul = HL7_Formatter.formatMessage(parsedMessage);
   DOMHelpers.addElementAsComponent("msg_content",html_ul);
   DOMHelpers.removeChildren("msg_segment");
-  DOMHelpers.hide("msg_segment_wnd");
+  //DOMHelpers.hide("msg_segment_wnd");
+  
+  //for each segment
   for(var segmentIndex in parsedMessage.segments) {
-    var segmentName = "segment_" + segmentIndex;
-    document.getElementById(segmentName).addEventListener("click", View.segmentClickFactory(segmentIndex, parsedMessage));
+    var segment = parsedMessage.segments[segmentIndex];
+    var segmentId = "segment_" + segmentIndex;
+    document.getElementById(segmentId).addEventListener("click", View.segmentClickFactory(segmentIndex));
+    //menuItem for segments
+    var segmentMenu = document.getElementById("msg_segment_menu");
+    var liElement = document.createElement('li');
+    liElement.id="menu_" + segmentIndex;
+    liElement.className="menuItem_class";
+    liElement.appendChild(document.createTextNode(segment.segmentName));
+    liElement.addEventListener("click", View.menuClickFactory(segmentIndex));
+    liElement.addEventListener("mouseenter", View.menuMouseEnterFacotry(segment));
+    liElement.addEventListener("mouseleave", View.menuMouseLeaveFacotry());
+    segmentMenu.appendChild(liElement);
+    
+    //segemntDetail
+    var msg_segment = document.getElementById("msg_segment");
+    var liElementSegment = document.createElement('li');
+    liElementSegment.id="component_" + segmentIndex;
+    liElementSegment.className='component_class';
+    var detail = HL7_Formatter.formatSegmentInDetail(segment);
+    liElementSegment.appendChild(detail);
+    msg_segment.appendChild(liElementSegment);
   }
 };
 
-View.segmentClickFactory=function(segmentIndex, parsedMessage) {
+View.menuMouseEnterFacotry=function(segment) {
+  return function(e) {
+    console.log("Entering: ");
+    console.log(e);
+    var x = e.layerX;
+    var y = e.layerY;
+    var d = document.getElementById("segmentHover");
+    d.style.position = "absolute";
+    d.style.left = x + 'px';
+    d.style.top = (y - 25) +'px';
+    
+    var doc = document.getElementById("segmentHover");
+    
+    DOMHelpers.removeChildren("segmentHover");
+    var segmentDisplay = HL7_Formatter.formatSegment(segment);
+    doc.appendChild(document.createTextNode(segmentDisplay));
+    doc.style.display="block";
+  };
+};
+
+View.menuMouseLeaveFacotry=function() {
+  return function(e) {
+    document.getElementById("segmentHover").style.display="none";
+  };
+};
+
+View.menuClickFactory=function(visibleIndex) {
+  return function() {
+    //change menu
+    var menuItems = document.getElementById("msg_segment_menu").childNodes;
+    var numberOfMenuItems = menuItems.length;
+    var index=0;
+    for (index; index<numberOfMenuItems; index++) {
+      var menuItem = menuItems[index];
+      if (index==visibleIndex) {
+        var cssClasses = menuItem.className.replace('msg_segment_menu_item_selected','').trim();
+        cssClasses+=' msg_segment_menu_item_selected';
+        menuItem.className=cssClasses;
+      } else {
+        menuItem.className=menuItem.className.replace('msg_segment_menu_item_selected','').trim();
+      }
+    }
+    
+    //hide all components
+    var components = document.getElementById("msg_segment").childNodes;
+    var numberOfComponents = components.length;
+    var cIndex=0;
+    for (cIndex; cIndex<numberOfComponents; cIndex++) {
+      var component = components[cIndex];
+      if (cIndex==visibleIndex) {
+        component.style.display = "block";
+      } else {
+        component.style.display = "none";
+      }
+    }
+  };
+};
+
+View.segmentClickFactory=function(segmentIndex) {
   return function(){
-            var fieldNameHoverHandler = function(coord, name) {
-              if (name==='') return;
-              var segmentInfo = DB.getSegmentInfo(name);
-              HL7_Formatter.setSegmentInfo(coord, name, segmentInfo[0], segmentInfo[1]);
-            };
-            var fieldNameOutHandler = function(name) {
-              console.log('Handling out for: ' + name);
-              if (name==='') return;
-              HL7_Formatter.hideSegmentInfo();
-            };
-            
-            //handle selecting segment name
-            var segmentSelectHandler = function(segment) {
-                console.log("segmentSelectHandler");
-                console.log(segment);
-                
-            };
-            
-            //remove all selected CSS
-            var li_segments = document.getElementsByClassName('segment');
-            var numberOfSegments = li_segments.length;
-            for (var li_index=0; li_index<numberOfSegments; li_index++) {
-              li_segment = li_segments[li_index];
-              var cssClasses = li_segment.className.replace('selected','').trim();
-              if (li_index==segmentIndex) {
-                cssClasses = cssClasses + " selected";
-              }
-              li_segment.className=cssClasses;
-            }
-            
-            var segmentSelectors = HL7_Formatter.formatSegmentSelector(segmentIndex, parsedMessage, segmentSelectHandler);
-            DOMHelpers.addElementsToId("msg_segment_selector",segmentSelectors);
-            
-            var segment = parsedMessage.segments[segmentIndex];
-            var segmentHTMLTable = HL7_Formatter.formatSegmentInDetail(segment, fieldNameHoverHandler, fieldNameOutHandler);
-            DOMHelpers.addElementAsComponent("msg_segment",segmentHTMLTable);
-            
-            
-            DOMHelpers.show("msg_segment_wnd");
+    DOMHelpers.hide("msg_content");
+    var menuSelectionFunction = View.menuClickFactory(segmentIndex);
+    menuSelectionFunction();
+    DOMHelpers.show("msg_segment_wnd");
   };
 };
 
