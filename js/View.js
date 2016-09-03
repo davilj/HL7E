@@ -5,7 +5,6 @@ View.displayMessage = function(parsedMessage) {
   var html_ul = HL7_Formatter.formatMessage(parsedMessage);
   DOMHelpers.addElementAsComponent("msg_content",html_ul);
   DOMHelpers.removeChildren("msg_segment");
-  //DOMHelpers.hide("msg_segment_wnd");
   
   //for each segment
   for(var segmentIndex in parsedMessage.segments) {
@@ -36,8 +35,6 @@ View.displayMessage = function(parsedMessage) {
 
 View.menuMouseEnterFacotry=function(segment) {
   return function(e) {
-    console.log("Entering: ");
-    console.log(e);
     var x = e.layerX;
     var y = e.layerY;
     var d = document.getElementById("segmentHover");

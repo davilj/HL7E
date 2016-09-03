@@ -15,6 +15,10 @@ DOMHelpers.removeChildren = function(parentId) {
   }
 };
 
+DOMHelpers.showAt = function(elementId, x, y, content) {
+  
+};
+
 DOMHelpers.hide=function(elementId) {
   var p = document.getElementById(elementId);
   p.style.display = "none";
