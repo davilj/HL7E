@@ -4,6 +4,10 @@ var View = {};
 View.displayMessage = function(parsedMessage) {
   var html_ul = HL7_Formatter.formatMessage(parsedMessage);
   DOMHelpers.addElementAsComponent("msg_content",html_ul);
+  DOMHelpers.show("msg_content");
+  DOMHelpers.hide("msg_segment_wnd");
+  DOMHelpers.removeChildren("msg_segment");
+  DOMHelpers.removeChildren("msg_segment_menu");
   DOMHelpers.removeChildren("msg_segment");
   
   //for each segment
