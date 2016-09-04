@@ -64,7 +64,7 @@ HL7_Formatter.formatSegmentInDetail = function(segment, segmentNameHoverHandler,
 
 
 HL7_Formatter.formatFieldInDetail = function(segmentNameHoverHandler, segmentNameOutHandler, tableRow, name, index , components) {
-  var className = 'componentCell ' + name;
+  var className = 'componentCell';
   var numberOfComponents = components.length;
   var addCell = function(content, _class) {
     var tableCell = document.createElement('td');
