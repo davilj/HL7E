@@ -34,6 +34,7 @@ View.displayMessage = function(parsedMessage) {
     var detail = HL7_Formatter.formatSegmentInDetail(segment);
     liElementSegment.appendChild(detail);
     msg_segment.appendChild(liElementSegment);
+    
   }
 };
 
@@ -79,17 +80,39 @@ View.menuClickFactory=function(visibleIndex) {
     }
     
     //hide all components
-    var components = document.getElementById("msg_segment").childNodes;
+    
+    var msg_segmentDiv = document.getElementById("msg_segment");
+    
+    var components = msg_segmentDiv.childNodes;
     var numberOfComponents = components.length;
     var cIndex=0;
     for (cIndex; cIndex<numberOfComponents; cIndex++) {
       var component = components[cIndex];
       if (cIndex==visibleIndex) {
         component.style.display = "block";
+        
       } else {
         component.style.display = "none";
       }
     }
+    var elementBR = msg_segmentDiv.getBoundingClientRect();
+    var windowHeight = screen.availHeight;
+    var windowWidth = screen.availWidth;
+    if (elementBR.bottom-elementBR.top>windowHeight) {
+      var windowH = windowHeight - elementBR.top - 50;
+      msg_segmentDiv.style.height = windowH + "px";
+    } else {
+      msg_segmentDiv.style.height = '';
+    }
+    
+    if (elementBR.right-elementBR.left>windowWidth) {
+      var windowW = windowWidth - elementBR.left;
+      msg_segmentDiv.style.width = windowW + "px";
+    } else {
+      msg_segmentDiv.style.width = '';
+    }
+    
+    console.log(elementBR);
   };
 };
 

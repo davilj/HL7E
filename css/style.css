@@ -87,6 +87,10 @@ li.segment {
   display: none;
 }
 
+#msg_segment {
+  overflow : scroll;
+}
+
 #msg_segment_menu {
   margin : 1px;
   padding : 10px;
