@@ -144,3 +144,11 @@ li.segment {
 
   background-color: #e6f2ff;
 }
+
+#segmentEdit_components input {
+  display : inline;
+}
+
+
+
+

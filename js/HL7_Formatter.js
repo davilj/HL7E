@@ -41,56 +41,7 @@ HL7_Formatter.getSegmentName = function(segment) {
   return segmentName.toLowerCase();
 };
 
-HL7_Formatter.formatSegmentInDetail = function(segment, segmentNameHoverHandler, segmentNameOutHandler) {
-  var handleMouseOver=function() {
-    console.log("handling mouse over");
-  };
-  var segmentName = segment.segmentName;
-  var tbl = document.createElement('table');
-  //tbl.style.width = '100%';
-  var tbdy = document.createElement('tbody');
-  for (var index in segment.fields) {
-    var field = segment.fields[index];
-    var indexNumber = parseInt(index) + 1;
-    var tableRow = document.createElement('tr');
-    tableRow.id=('segment_' + index);
-    HL7_Formatter.formatFieldInDetail(segmentNameHoverHandler, segmentNameOutHandler, tableRow, segmentName, indexNumber, field);
-    tbdy.appendChild(tableRow);
-    
-  }
-  tbl.appendChild(tbdy);
-  return tbl;
-};
 
-
-HL7_Formatter.formatFieldInDetail = function(segmentNameHoverHandler, segmentNameOutHandler, tableRow, name, index , components) {
-  var className = 'componentCell';
-  var numberOfComponents = components.length;
-  var addCell = function(content, _class) {
-    var tableCell = document.createElement('td');
-    tableCell.appendChild(document.createTextNode(content));
-    tableCell.className = _class;
-    return tableCell;
-  };
-  
-  var segmentName = name + "-" + index;
-  var tdMain = addCell((name + "-" + index), className);
-  tdMain.addEventListener("mouseenter", function(event) {
-    console.log(event);
-    var coord = [event.clientX, event.clientY];
-    segmentNameHoverHandler(coord, segmentName);
-  }, false);
-  tdMain.addEventListener("mouseleave", function(event) {
-    segmentNameOutHandler(segmentName);
-  }, false);
-  tableRow.appendChild(tdMain);
-  for (var compIndex =0; compIndex<numberOfComponents; compIndex++) {
-    if (compIndex!==0) {
-      tableRow.appendChild(addCell('^',''));
-    }
-    tableRow.appendChild(addCell(components[compIndex], className));
-  }
-};
 
 HL7_Formatter.setSegmentInfo=function(coord, segmentId, segmentName, segmentDesc) {
   console.log(coord);
