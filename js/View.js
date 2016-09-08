@@ -33,7 +33,6 @@ View.displayMessage = function(parsedMessage) {
     liElementSegment.className='component_class';
     var detail = View.formatSegmentInDetail(segmentIndex, parsedMessage);
     liElementSegment.appendChild(detail);
-    
     msg_segment.appendChild(liElementSegment);
     
   }
@@ -52,7 +51,7 @@ View.formatSegmentInDetail = function(segmentIndex, parsedMessage) {
     var field = segment.fields[index];
     var indexNumber = parseInt(index) + 1;
     var tableRow = document.createElement('tr');
-    tableRow.addEventListener('click', View.componentSelectorFactory(segment, index, segmentIndex));
+    tableRow.addEventListener('click', View.componentSelectorFactory(segment, index, segmentIndex, parsedMessage));
     tableRow.id=(segmentIndex + "-" + segmentName + '-' + (parseInt(index)+1));
     View.formatFieldInDetail(tableRow, segmentName, indexNumber, field);
     tbdy.appendChild(tableRow);
@@ -83,15 +82,17 @@ View.formatFieldInDetail = function(tableRow, name, index , components) {
   }
 };
 
-View.componentSelectorFactory=function(segment, indexAsStr, segmentIndex) {
+View.componentSelectorFactory=function(segment, indexAsStr, segmentIndex, parsedMessage) {
   
   return function(e) {
     console.log("Click the row");
     console.log(e);
-    var field = segment.fields[parseInt(indexAsStr)];
+    var index = parseInt(indexAsStr);
+    var field = segment.fields[index];
+    var pm = parsedMessage;
     console.log(field);
     console.log(segment);
-    var index = parseInt(indexAsStr);
+    
     var fieldName = document.getElementById("segmentEdit_fieldName");
     fieldName.innerHTML=(segment.segmentName + "-" + (index+1));
     DOMHelpers.removeChildren("segmentEdit_components");
@@ -109,7 +110,14 @@ View.componentSelectorFactory=function(segment, indexAsStr, segmentIndex) {
     });
     
     var save = document.getElementById("save_segment");
-    save.addEventListener('click', function() {
+    save.addEventListener('click', View.saveFieldChangeHandler(segment.segmentName, segmentIndex, index));
+    DOMHelpers.show("segmentEdit");
+    DOMHelpers.hide("msg_segment_wnd");
+  };
+};
+
+View.saveFieldChangeHandler=function(segmentName, segmentIndex, index) {
+  return function() {
       DOMHelpers.hide("segmentEdit");
       DOMHelpers.show("msg_segment_wnd");
       var fieldElement = document.getElementById("segmentEdit_components");
@@ -122,15 +130,13 @@ View.componentSelectorFactory=function(segment, indexAsStr, segmentIndex) {
         var value = inputComponent.value;
         newComponents.push(value);
       }
-      var trId = segmentIndex + "-" + segment.segmentName + "-" + (index+1);
+      var trId = segmentIndex + "-" + segmentName + "-" + (index+1);
       var tr = document.getElementById(trId);
       DOMHelpers.removeChildren(trId);
-      View.formatFieldInDetail(tr, segment.segmentName, (index+1) , newComponents);
-    });
-    
-    
-    DOMHelpers.show("segmentEdit");
-    DOMHelpers.hide("msg_segment_wnd");
+      View.formatFieldInDetail(tr, segmentName, index , newComponents);
+      //var segment2Update = parsedMessage.segments[parseInt(segmentIndex)];
+      //segment2Update.fields[parseInt(indexAsStr)] = newComponents;
+      //View.formatSegmentInDetail(segmentIndex, parsedMessage);
   };
 };
 

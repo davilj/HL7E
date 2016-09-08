@@ -2,14 +2,11 @@
 */
 var HL7 = {};
 
-HL7.log = function () {
-    console.log("This is working....");
-};
+
 
 HL7.parseMsg = function(msgText, callback) {
   console.log(msgText);
   var segments = msgText.split('\r').map(HL7.parseSegment);
-  console.log(segments);
   var message = {'segments':segments};
   callback(message);
 };
