@@ -15,6 +15,13 @@ DOMHelpers.removeChildren = function(parentId) {
   }
 };
 
+DOMHelpers.addCell = function(content, _class) {
+    var tableCell = document.createElement('td');
+    tableCell.appendChild(document.createTextNode(content));
+    tableCell.className = _class;
+    return tableCell;
+  };
+
 DOMHelpers.showAt = function(elementId, x, y, content) {
   
 };

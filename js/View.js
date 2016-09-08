@@ -71,7 +71,13 @@ View.displayMessage = function(parsedMessage) {
     DOMHelpers.show("msg_segment_wnd");
   });
   
-  
+  var addComponent = document.getElementById("add_component");
+  addComponent.addEventListener('click', function() {
+    var tr = document.getElementById("segmentEdit_components");
+    var inputComponent = document.createElement('input');
+    tr.appendChild(inputComponent);
+  });
+
 };
 
 View.formatSegmentInDetail = function(segmentIndex) {
@@ -100,23 +106,18 @@ View.formatSegmentInDetail = function(segmentIndex) {
 View.formatFieldInDetail = function(tableRow, name, index , components) {
   var className = 'componentCell';
   var numberOfComponents = components.length;
-  var addCell = function(content, _class) {
-    var tableCell = document.createElement('td');
-    tableCell.appendChild(document.createTextNode(content));
-    tableCell.className = _class;
-    return tableCell;
-  };
-  
   var segmentName = name + "-" + index;
-  var tdMain = addCell((name + "-" + index), className);
+  var tdMain = DOMHelpers.addCell((name + "-" + index), className);
   tableRow.appendChild(tdMain);
   for (var compIndex =0; compIndex<numberOfComponents; compIndex++) {
     if (compIndex!==0) {
-      tableRow.appendChild(addCell('^',''));
+      tableRow.appendChild(DOMHelpers.addCell('^',''));
     }
-    tableRow.appendChild(addCell(components[compIndex], className));
+    tableRow.appendChild(DOMHelpers.addCell(components[compIndex], className));
   }
 };
+
+
 
 View.componentSelectorFactory=function() {
   
@@ -128,8 +129,6 @@ View.componentSelectorFactory=function() {
     var fieldIndex = parseInt(info[2])-1;
     var segment = View.parsedMessage.segments[segmentIndex];
     var field=segment.fields[fieldIndex];
-    
-    
     var fieldName = document.getElementById("segmentEdit_fieldName");
     fieldName.innerHTML=(segment.segmentName + "-" + info[2]);
     DOMHelpers.removeChildren("segmentEdit_components");
@@ -143,31 +142,6 @@ View.componentSelectorFactory=function() {
     DOMHelpers.show("segmentEdit");
     DOMHelpers.hide("msg_segment_wnd");
     
-  };
-};
-
-//TODO remove
-View.saveFieldChangeHandler=function(segmentName, segmentIndex, index) {
-  return function() {
-      DOMHelpers.hide("segmentEdit");
-      DOMHelpers.show("msg_segment_wnd");
-      var fieldElement = document.getElementById("segmentEdit_components");
-      var components = fieldElement.childNodes;
-      var numberOfComponents = components.length;
-      var componentIndex=0;
-      var newComponents = [];
-      for (componentIndex; componentIndex<numberOfComponents; componentIndex++) {
-        var inputComponent = components[componentIndex];
-        var value = inputComponent.value;
-        newComponents.push(value);
-      }
-      var trId = segmentIndex + "-" + segmentName + "-" + (index+1);
-      var tr = document.getElementById(trId);
-      DOMHelpers.removeChildren(trId);
-      View.formatFieldInDetail(tr, segmentName, index , newComponents);
-      //var segment2Update = parsedMessage.segments[parseInt(segmentIndex)];
-      //segment2Update.fields[parseInt(indexAsStr)] = newComponents;
-      //View.formatSegmentInDetail(segmentIndex, parsedMessage);
   };
 };
 
