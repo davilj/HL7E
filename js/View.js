@@ -2,7 +2,8 @@ var View = {};
 
 //display each line of file
 View.displayMessage = function(parsedMessage) {
-  var html_ul = HL7_Formatter.formatMessage(parsedMessage);
+  View.parsedMessage = parsedMessage;
+  var html_ul = HL7_Formatter.formatMessage(View.parsedMessage);
   DOMHelpers.addElementAsComponent("msg_content",html_ul);
   DOMHelpers.show("msg_content");
   DOMHelpers.hide("msg_segment_wnd");
@@ -11,8 +12,8 @@ View.displayMessage = function(parsedMessage) {
   DOMHelpers.removeChildren("msg_segment");
   
   //for each segment
-  for(var segmentIndex in parsedMessage.segments) {
-    var segment = parsedMessage.segments[segmentIndex];
+  for(var segmentIndex in View.parsedMessage.segments) {
+    var segment = View.parsedMessage.segments[segmentIndex];
     var segmentId = "segment_" + segmentIndex;
     document.getElementById(segmentId).addEventListener("click", View.segmentClickFactory(segmentIndex));
     //menuItem for segments
@@ -31,15 +32,50 @@ View.displayMessage = function(parsedMessage) {
     var liElementSegment = document.createElement('li');
     liElementSegment.id="component_" + segmentIndex;
     liElementSegment.className='component_class';
-    var detail = View.formatSegmentInDetail(segmentIndex, parsedMessage);
+    var detail = View.formatSegmentInDetail(segmentIndex);
     liElementSegment.appendChild(detail);
     msg_segment.appendChild(liElementSegment);
     
   }
+  
+  var cancel = document.getElementById("cancel_segment");
+  cancel.addEventListener('click', function() {
+      DOMHelpers.hide("segmentEdit");
+      DOMHelpers.show("msg_segment_wnd");
+  });
+    
+  var save = document.getElementById("save_segment");
+  save.addEventListener('click', function() {
+    var selected = View.selectedField;
+    var info = selected.split("-");
+    var segmentIndex = info[0];
+    var segmentName = info[1];
+    var fieldIndex = info[2];
+    var fieldElement = document.getElementById("segmentEdit_components");
+    var components = fieldElement.childNodes;
+    var numberOfComponents = components.length;
+    var componentIndex=0;
+    var newComponents = [];
+    for (componentIndex; componentIndex<numberOfComponents; componentIndex++) {
+      var inputComponent = components[componentIndex];
+      var value = inputComponent.value;
+      newComponents.push(value);
+    }
+    var trId = selected;
+    var tr = document.getElementById(trId);
+    DOMHelpers.removeChildren(trId);
+    View.formatFieldInDetail(tr, segmentName, fieldIndex , newComponents);
+    View.parsedMessage.segments[segmentIndex].fields[parseInt(fieldIndex)-1]=newComponents;
+    
+    DOMHelpers.hide("segmentEdit");
+    DOMHelpers.show("msg_segment_wnd");
+  });
+  
+  
 };
 
-View.formatSegmentInDetail = function(segmentIndex, parsedMessage) {
-  var segment = parsedMessage.segments[segmentIndex];
+View.formatSegmentInDetail = function(segmentIndex) {
+  var segment = View.parsedMessage.segments[segmentIndex];
   var handleMouseOver=function() {
     console.log("handling mouse over");
   };
@@ -51,7 +87,7 @@ View.formatSegmentInDetail = function(segmentIndex, parsedMessage) {
     var field = segment.fields[index];
     var indexNumber = parseInt(index) + 1;
     var tableRow = document.createElement('tr');
-    tableRow.addEventListener('click', View.componentSelectorFactory(segment, index, segmentIndex, parsedMessage));
+    tableRow.addEventListener('click', View.componentSelectorFactory());
     tableRow.id=(segmentIndex + "-" + segmentName + '-' + (parseInt(index)+1));
     View.formatFieldInDetail(tableRow, segmentName, indexNumber, field);
     tbdy.appendChild(tableRow);
@@ -82,19 +118,20 @@ View.formatFieldInDetail = function(tableRow, name, index , components) {
   }
 };
 
-View.componentSelectorFactory=function(segment, indexAsStr, segmentIndex, parsedMessage) {
+View.componentSelectorFactory=function() {
   
   return function(e) {
-    console.log("Click the row");
-    console.log(e);
-    var index = parseInt(indexAsStr);
-    var field = segment.fields[index];
-    var pm = parsedMessage;
-    console.log(field);
-    console.log(segment);
+    var id = e.currentTarget.id;
+    View.selectedField = id;
+    var info = id.split("-");
+    var segmentIndex = parseInt(info[0]);
+    var fieldIndex = parseInt(info[2])-1;
+    var segment = View.parsedMessage.segments[segmentIndex];
+    var field=segment.fields[fieldIndex];
+    
     
     var fieldName = document.getElementById("segmentEdit_fieldName");
-    fieldName.innerHTML=(segment.segmentName + "-" + (index+1));
+    fieldName.innerHTML=(segment.segmentName + "-" + info[2]);
     DOMHelpers.removeChildren("segmentEdit_components");
     var components = document.getElementById("segmentEdit_components");
     for (var componentIndex in field) {
@@ -102,20 +139,14 @@ View.componentSelectorFactory=function(segment, indexAsStr, segmentIndex, parsed
       inputComponent.value=field[componentIndex];
       components.appendChild(inputComponent);
     }
-    //TODO add component, save and cancel
-    var cancel = document.getElementById("cancel_segment");
-    cancel.addEventListener('click', function() {
-      DOMHelpers.hide("segmentEdit");
-      DOMHelpers.show("msg_segment_wnd");
-    });
     
-    var save = document.getElementById("save_segment");
-    save.addEventListener('click', View.saveFieldChangeHandler(segment.segmentName, segmentIndex, index));
     DOMHelpers.show("segmentEdit");
     DOMHelpers.hide("msg_segment_wnd");
+    
   };
 };
 
+//TODO remove
 View.saveFieldChangeHandler=function(segmentName, segmentIndex, index) {
   return function() {
       DOMHelpers.hide("segmentEdit");
