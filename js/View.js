@@ -3,22 +3,64 @@ var View = {};
 View.init = function() {
   var chooseFileButton = document.querySelector('#choose_file');
   chooseFileButton.addEventListener('click', function(e) {
-  var accepts = [{
-    mimeTypes: ['text/*'],
-    extensions: ['edi']
-  }];
-  chrome.fileSystem.chooseEntry({type: 'openFile', accepts: accepts}, function(theEntry) {
-    if (!theEntry) {
-      output.textContent = 'No file selected.';
-      return;
-    }
-    // use local storage to retain access to this file
-    chrome.storage.local.set({'chosenFile': chrome.fileSystem.retainEntry(theEntry)});
-    //TODO 2
-    //View.displayEntryData(theEntry);
-    View.loadFileEntry(theEntry);
+    var accepts = [{
+      mimeTypes: ['text/*'],
+      extensions: ['edi']
+    }];
+    chrome.fileSystem.chooseEntry({type: 'openFile', accepts: accepts}, function(theEntry) {
+      if (!theEntry) {
+        output.textContent = 'No file selected.';
+        return;
+      }
+      // use local storage to retain access to this file
+      chrome.storage.local.set({'chosenFile': chrome.fileSystem.retainEntry(theEntry)});
+      //TODO 2
+      //View.displayEntryData(theEntry);
+      View.loadFileEntry(theEntry);
+    });
   });
-});
+  
+  var cancel = document.getElementById("cancel_segment");
+  cancel.addEventListener('click', function() {
+      DOMHelpers.hide("segmentEdit");
+      DOMHelpers.show("msg_segment_wnd");
+  });
+  
+  var addComponent = document.getElementById("add_component");
+  addComponent.addEventListener('click', function() {
+    var tr = document.getElementById("segmentEdit_components");
+    var inputComponent = document.createElement('input');
+    tr.appendChild(inputComponent);
+  });
+  
+  var save = document.getElementById("save_segment");
+  save.addEventListener('click', function() {
+    var selected = View.selectedField;
+    var info = selected.split("-");
+    var segmentIndex = info[0];
+    var segmentName = info[1];
+    var fieldIndex = info[2];
+    var fieldElement = document.getElementById("segmentEdit_components");
+    var components = fieldElement.childNodes;
+    var numberOfComponents = components.length;
+    var componentIndex=0;
+    var newComponents = [];
+    for (componentIndex; componentIndex<numberOfComponents; componentIndex++) {
+      var inputComponent = components[componentIndex];
+      var value = inputComponent.value;
+      newComponents.push(value);
+    }
+    var trId = selected;
+    var tr = document.getElementById(trId);
+    DOMHelpers.removeChildren(trId);
+    View.formatFieldInDetail(tr, segmentName, fieldIndex , newComponents);
+    View.parsedMessage.segments[segmentIndex].fields[parseInt(fieldIndex)-1]=newComponents;
+    
+    DOMHelpers.hide("segmentEdit");
+    DOMHelpers.show("msg_segment_wnd");
+  });
+  
+  
 };
 
 View.loadFileEntry=function(_chosenEntry) {
@@ -72,47 +114,6 @@ View.displayMessage = function(parsedMessage) {
     msg_segment.appendChild(liElementSegment);
     
   }
-  
-  var cancel = document.getElementById("cancel_segment");
-  cancel.addEventListener('click', function() {
-      DOMHelpers.hide("segmentEdit");
-      DOMHelpers.show("msg_segment_wnd");
-  });
-    
-  var save = document.getElementById("save_segment");
-  save.addEventListener('click', function() {
-    var selected = View.selectedField;
-    var info = selected.split("-");
-    var segmentIndex = info[0];
-    var segmentName = info[1];
-    var fieldIndex = info[2];
-    var fieldElement = document.getElementById("segmentEdit_components");
-    var components = fieldElement.childNodes;
-    var numberOfComponents = components.length;
-    var componentIndex=0;
-    var newComponents = [];
-    for (componentIndex; componentIndex<numberOfComponents; componentIndex++) {
-      var inputComponent = components[componentIndex];
-      var value = inputComponent.value;
-      newComponents.push(value);
-    }
-    var trId = selected;
-    var tr = document.getElementById(trId);
-    DOMHelpers.removeChildren(trId);
-    View.formatFieldInDetail(tr, segmentName, fieldIndex , newComponents);
-    View.parsedMessage.segments[segmentIndex].fields[parseInt(fieldIndex)-1]=newComponents;
-    
-    DOMHelpers.hide("segmentEdit");
-    DOMHelpers.show("msg_segment_wnd");
-  });
-  
-  var addComponent = document.getElementById("add_component");
-  addComponent.addEventListener('click', function() {
-    var tr = document.getElementById("segmentEdit_components");
-    var inputComponent = document.createElement('input');
-    tr.appendChild(inputComponent);
-  });
-
 };
 
 View.formatSegmentInDetail = function(segmentIndex) {
