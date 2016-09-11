@@ -123,6 +123,19 @@ li.segment {
   opacity : 0.8;
 }
 
+#segmentEdit_components input {
+  margin : 1px;
+  border-radius: 5px;
+}
+
+#segmentEdit_components input:focus {
+  margin : 1px;
+  border-radius: 5px;
+  background-color : #DDD;
+  box-shadow: 0px 0px 5px #FFF;
+  
+}
+
 .info {
   position: absolute;
   border: 1px solid black;

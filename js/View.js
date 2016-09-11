@@ -1,5 +1,40 @@
 var View = {};
 
+View.init = function() {
+  var chooseFileButton = document.querySelector('#choose_file');
+  chooseFileButton.addEventListener('click', function(e) {
+  var accepts = [{
+    mimeTypes: ['text/*'],
+    extensions: ['edi']
+  }];
+  chrome.fileSystem.chooseEntry({type: 'openFile', accepts: accepts}, function(theEntry) {
+    if (!theEntry) {
+      output.textContent = 'No file selected.';
+      return;
+    }
+    // use local storage to retain access to this file
+    chrome.storage.local.set({'chosenFile': chrome.fileSystem.retainEntry(theEntry)});
+    //TODO 2
+    //View.displayEntryData(theEntry);
+    View.loadFileEntry(theEntry);
+  });
+});
+};
+
+View.loadFileEntry=function(_chosenEntry) {
+  chosenEntry = _chosenEntry;
+  chosenEntry.file(function(file) {
+    readAsText(chosenEntry, function(result) {
+      HL7.parseMsg(result, function(parsedMessage) {
+        View.displayMessage(parsedMessage);
+      });
+    });
+    // Update display.
+    //saveFileButton.disabled = false; // allow the user to save the content
+    View.displayEntryData(chosenEntry);
+  });
+};
+
 //display each line of file
 View.displayMessage = function(parsedMessage) {
   View.parsedMessage = parsedMessage;
