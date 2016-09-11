@@ -24,7 +24,7 @@ View.init = function() {
 View.loadFileEntry=function(_chosenEntry) {
   chosenEntry = _chosenEntry;
   chosenEntry.file(function(file) {
-    readAsText(chosenEntry, function(result) {
+    File.readAsText(chosenEntry, function(result) {
       HL7.parseMsg(result, function(parsedMessage) {
         View.displayMessage(parsedMessage);
       });

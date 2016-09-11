@@ -1,6 +1,19 @@
 var File = {};
 
-File.writeFile = function writeFileEntry(writableEntry, opt_blob, callback) {
+File.readAsText=function(fileEntry, callback) {
+  fileEntry.file(function(file) {
+    var reader = new FileReader();
+
+    reader.onerror = errorHandler;
+    reader.onload = function(e) {
+      callback(e.target.result);
+    };
+
+    reader.readAsText(file);
+  });
+};
+
+File.writeFileEntry = function(writableEntry, opt_blob, callback) {
   if (!writableEntry) {
     output.textContent = 'Nothing selected.';
     return;

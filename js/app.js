@@ -12,18 +12,7 @@ function errorHandler(e) {
   console.error(e);
 }
 
-function readAsText(fileEntry, callback) {
-  fileEntry.file(function(file) {
-    var reader = new FileReader();
 
-    reader.onerror = errorHandler;
-    reader.onload = function(e) {
-      callback(e.target.result);
-    };
-
-    reader.readAsText(file);
-  });
-}
 
 
 View.init();
