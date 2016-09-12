@@ -36,5 +36,18 @@ DOMHelpers.show=function(elementId) {
   p.style.display = "block";
 };
 
+DOMHelpers.removeClass = function(elementId, className) {
+  var element = document.getElementById(elementId);
+  var cssClasses = element.className.replace(className,'').trim();
+  element.className=cssClasses;
+};
+
+DOMHelpers.addClass = function(elementId, className) {
+  var element = document.getElementById(elementId);
+  var cssClasses = element.className.replace(className,'').trim();
+  cssClasses+=' ' + className;
+  element.className=cssClasses;
+};
+
 
 

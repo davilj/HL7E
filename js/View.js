@@ -14,8 +14,6 @@ View.init = function() {
       }
       // use local storage to retain access to this file
       chrome.storage.local.set({'chosenFile': chrome.fileSystem.retainEntry(theEntry)});
-      //TODO 2
-      //View.displayEntryData(theEntry);
       View.loadFileEntry(theEntry);
     });
   });
@@ -59,6 +57,7 @@ View.init = function() {
     DOMHelpers.hide("segmentEdit");
     DOMHelpers.show("msg_segment_wnd");
     DOMHelpers.show("save_message");
+    DOMHelpers.addClass("msg_segment_wnd", "save_required");
   });
   
   var saveMessage = document.getElementById("save_message");
@@ -68,7 +67,8 @@ View.init = function() {
       var text = HL7.toText(View.parsedMessage);
       var blob = new Blob([text], {type: 'text/plain'});
       File.writeFileEntry(writableEntry, blob, function(e) {
-        console.log("save completed");
+        DOMHelpers.hide("save_message");
+        DOMHelpers.removeClass("msg_segment_wnd", "save_required");
       });
     });
   });
