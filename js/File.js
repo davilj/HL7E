@@ -28,7 +28,7 @@ File.writeFileEntry = function(writableEntry, opt_blob, callback) {
     // loaded.
     if (opt_blob) {
       writer.truncate(opt_blob.size);
-      waitForIO(writer, function() {
+      File.waitForIO(writer, function() {
         writer.seek(0);
         writer.write(opt_blob);
       });
@@ -36,7 +36,7 @@ File.writeFileEntry = function(writableEntry, opt_blob, callback) {
     else {
       chosenEntry.file(function(file) {
         writer.truncate(file.fileSize);
-        waitForIO(writer, function() {
+        File.waitForIO(writer, function() {
           writer.seek(0);
           writer.write(file);
         });
@@ -45,7 +45,7 @@ File.writeFileEntry = function(writableEntry, opt_blob, callback) {
   }, errorHandler);
 };
 
-FilewaitForIO=function(writer, callback) {
+File.waitForIO=function(writer, callback) {
   // set a watchdog to avoid eventual locking:
   var start = Date.now();
   // wait for a few seconds

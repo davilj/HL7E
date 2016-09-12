@@ -25,4 +25,16 @@ HL7.parseComponent = function(field) {
   return components;
 };
 
+HL7.toText = function(parsedMessage) {
+  var segments = parsedMessage.segments.map(function(segment) {
+    var fields = segment.fields.map(function(components) {
+      return components.join('^');
+    });
+    
+    fields.unshift(segment.segmentName);
+    return fields.join("|");
+  });
+  return segments.join('\r');
+};
+
 

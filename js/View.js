@@ -33,8 +33,8 @@ View.init = function() {
     tr.appendChild(inputComponent);
   });
   
-  var save = document.getElementById("save_segment");
-  save.addEventListener('click', function() {
+  var saveSegment = document.getElementById("save_segment");
+  saveSegment.addEventListener('click', function() {
     var selected = View.selectedField;
     var info = selected.split("-");
     var segmentIndex = info[0];
@@ -58,9 +58,20 @@ View.init = function() {
     
     DOMHelpers.hide("segmentEdit");
     DOMHelpers.show("msg_segment_wnd");
+    DOMHelpers.show("save_message");
   });
   
-  
+  var saveMessage = document.getElementById("save_message");
+  saveMessage.addEventListener('click', function() {
+    var config = {type: 'saveFile', suggestedName: chosenEntry.name};
+    chrome.fileSystem.chooseEntry(config, function(writableEntry) {
+      var text = HL7.toText(View.parsedMessage);
+      var blob = new Blob([text], {type: 'text/plain'});
+      File.writeFileEntry(writableEntry, blob, function(e) {
+        console.log("save completed");
+      });
+    });
+  });
 };
 
 View.loadFileEntry=function(_chosenEntry) {
@@ -112,7 +123,6 @@ View.displayMessage = function(parsedMessage) {
     var detail = View.formatSegmentInDetail(segmentIndex);
     liElementSegment.appendChild(detail);
     msg_segment.appendChild(liElementSegment);
-    
   }
 };
 
