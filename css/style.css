@@ -165,6 +165,12 @@ li.segment {
   display : inline;
 }
 
+#segmentEdit_fieldName {
+  font-size : x-large;
+  font-weight: bold;
+  
+}
+
 .save_required {
   background-color: #f9ecec;
   border-radius: 0px 0px 5px 5px;
