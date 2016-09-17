@@ -111,8 +111,8 @@ View.displayMessage = function(parsedMessage) {
     liElement.className="menuItem_class";
     liElement.appendChild(document.createTextNode(segment.segmentName));
     liElement.addEventListener("click", View.menuClickFactory(segmentIndex));
-    liElement.addEventListener("mouseenter", View.menuMouseEnterFacotry(segment));
-    liElement.addEventListener("mouseleave", View.menuMouseLeaveFacotry());
+    //liElement.addEventListener("mouseenter", View.menuMouseEnterFacotry(segment));
+    //liElement.addEventListener("mouseleave", View.menuMouseLeaveFacotry());
     segmentMenu.appendChild(liElement);
     
     //segemntDetail

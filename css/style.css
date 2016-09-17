@@ -16,15 +16,17 @@ ul.message {
 li.segment {
   margin : 2px;
   padding : 5px;
-  border : 1px solid #efefef ;
-  border-radius: 5px;
+  border-bottom: 1px solid #efefef;
   font-size: x-small;
+  transition: transform 1s;
 }
 
 li.segment:hover {
   box-shadow: 0px 0px 5px #888888;
   transform : translate(1px,1px);
   border : 1px solid black ;
+  border-radius: 5px;
+  
 }
 
 .z_segment_style {
@@ -84,6 +86,12 @@ li.segment:hover {
   font-size: x-large;
 }
 
+#componentName {
+  font-style: italic;
+  font-size: medium;
+  border-bottom: 1px solid #555;
+}
+
 #componentHover {
   font-size : xx-small;
   margin : 5px;
@@ -91,7 +99,7 @@ li.segment:hover {
   border : 1px solid black ;
   border-radius: 5px;
   background-color : #eee;
-  opacity : 0.9;
+  opacity : 0.95;
 }
 
 #segmentEdit_components input {
