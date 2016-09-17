@@ -1,3 +1,10 @@
+#meatIcon {
+  position: absolute;
+  z-index: -1;
+  opacity:0.9;
+  left : 85%;
+  top : -60px;
+}
 
 #heading span {
   font-weight: bold;
@@ -7,6 +14,11 @@
 
 #file_path {
   border-radius: 5px;
+  opacity: 0.9;
+}
+
+#choose_file {
+  opacity: 0.8;
 }
 
 ul.message {
@@ -62,7 +74,7 @@ li.segment:hover {
 #msg_segment_menu {
   margin : 1px;
   padding : 10px;
-  background-color : #7f7a7a;
+  background: linear-gradient(to right, rgba(105,107,143,1), rgba(255,255,255,0));
 }
 
 #msg_segment_menu li {
