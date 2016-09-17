@@ -133,7 +133,6 @@ View.formatSegmentInDetail = function(segmentIndex) {
   };
   var segmentName = segment.segmentName;
   var tbl = document.createElement('table');
-  //tbl.style.width = '100%';
   var tbdy = document.createElement('tbody');
   for (var index in segment.fields) {
     var field = segment.fields[index];
@@ -154,6 +153,8 @@ View.formatFieldInDetail = function(tableRow, name, index , components) {
   var numberOfComponents = components.length;
   var segmentName = name + "-" + index;
   var tdMain = DOMHelpers.addCell((name + "-" + index), className);
+  tdMain.addEventListener('mouseenter', View.menuMouseEnterFacotry());
+  tdMain.addEventListener('mouseleave', View.menuMouseLeaveFacotry());
   tableRow.appendChild(tdMain);
   for (var compIndex =0; compIndex<numberOfComponents; compIndex++) {
     if (compIndex!==0) {
@@ -193,25 +194,35 @@ View.componentSelectorFactory=function() {
 
 View.menuMouseEnterFacotry=function(segment) {
   return function(e) {
-    var x = e.layerX;
-    var y = e.layerY;
-    var d = document.getElementById("segmentHover");
+    var cell = e.currentTarget;
+    var segmentInfo = cell.innerText;
+    var segmentInfoArr = segmentInfo.split("-");
+    var segmentName = segmentInfoArr[0];
+    var componentIndex = segmentInfoArr[1];
+    var componentDB = DB[segmentName];
+    var component = componentDB[segmentInfo];
+    
+    var x = e.clientX;
+    var y = e.clientY;
+    var d = document.getElementById("componentHover");
     d.style.position = "absolute";
     d.style.left = x + 'px';
-    d.style.top = (y - 25) +'px';
+    d.style.top = y +'px';
+    var lastIndex = component.length-1;
+    var opt = (component[3]=='R')?"Required":(component[3]=='C')?"Conditional":"Optional";
     
-    var doc = document.getElementById("segmentHover");
+    document.getElementById("componentId").innerHTML=component[0];
+    document.getElementById("componentName").innerHTML=component[lastIndex];
+    document.getElementById("componentDataType").innerHTML=component[2];
+    document.getElementById("componentOpt").innerHTML=opt;
     
-    DOMHelpers.removeChildren("segmentHover");
-    var segmentDisplay = HL7_Formatter.formatSegment(segment);
-    doc.appendChild(document.createTextNode(segmentDisplay));
-    doc.style.display="block";
+    DOMHelpers.show("componentHover");
   };
 };
 
 View.menuMouseLeaveFacotry=function() {
   return function(e) {
-    document.getElementById("segmentHover").style.display="none";
+    DOMHelpers.hide("componentHover");
   };
 };
 

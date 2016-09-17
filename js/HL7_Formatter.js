@@ -55,9 +55,6 @@ HL7_Formatter.setSegmentInfo=function(coord, segmentId, segmentName, segmentDesc
   document.querySelector('#segmentInfo').className='info';
 };
 
-HL7_Formatter.hideSegmentInfo=function() {
-  document.querySelector('#segmentInfo').className='info hide';
-};
 
 
 

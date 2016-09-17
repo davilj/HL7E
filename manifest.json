@@ -1,6 +1,6 @@
 {
-  "name": "HL7_V2_ed",
-  "version": "1.0",
+  "name": "Message Editor Analysis Tool",
+  "version": "0.9",
   "manifest_version": 2,
   "minimum_chrome_version": "31",
   "app": {
@@ -8,7 +8,7 @@
       "scripts": ["background.js"]
     }
   },
-  "icons": { "16": "assets/eye-16.png", "128": "assets/eye-128.png" },
+  "icons": { "16": "assets/meat-16.png", "128": "assets/meat-128.png" },
   "permissions": [
     {"fileSystem": ["write", "retainEntries", "directory"]},
     "storage"

@@ -1,4 +1,14 @@
 
+#heading span {
+  font-weight: bold;
+  font-size: xx-large;
+  
+}
+
+#file_path {
+  border-radius: 5px;
+}
+
 ul.message {
   list-style-type: none;
 }
@@ -6,7 +16,7 @@ ul.message {
 li.segment {
   margin : 2px;
   padding : 5px;
-  border : 1px solid black ;
+  border : 1px solid #efefef ;
   border-radius: 5px;
   font-size: x-small;
 }
@@ -14,54 +24,7 @@ li.segment {
 li.segment:hover {
   box-shadow: 0px 0px 5px #888888;
   transform : translate(1px,1px);
-}
-
-.msh {
-  background-color: #fffae6;
-}
-
-.evn {
-  background-color: #ffe6f2;
-}
-
-.pid {
-  background-color: #e6e6ff;
-}
-
-.orc {
-  background-color: #ecc6ec;
-}
-
-.rxa {
-  background-color: #e6ffe6;
-}
-
-.pv1 {
-  background-color: #e0e0eb
-}
-
-.pv2 {
-  background-color: #c2c2d6
-}
-
-.al1 {
-  background-color: #ffe6cc
-}
-
-.pd1 {
-  background-color: #e6ffe6;
-}
-
-.nk1 {
-  background-color: #ebebe0;
-}
-
-.dg1 {
-  background-color: #ffe0cc;
-}
-
-.pr1 {
-  background-color: #f2d9d9;
+  border : 1px solid black ;
 }
 
 .z_segment_style {
@@ -72,8 +35,6 @@ li.segment:hover {
   font-weight: bold;
   box-shadow: 0px 0px 5px #888888;
 }
-
-
 
 .caretCell {
   background-color: none;
@@ -118,14 +79,19 @@ li.segment:hover {
   font-size: x-large;
 }
 
-#segmentHover {
+#componentId {
+  font-weight: bold;
+  font-size: x-large;
+}
+
+#componentHover {
   font-size : xx-small;
   margin : 5px;
   padding : 2px;
   border : 1px solid black ;
   border-radius: 5px;
-  background-color : #FFF;
-  opacity : 0.8;
+  background-color : #eee;
+  opacity : 0.9;
 }
 
 #segmentEdit_components input {

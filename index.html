@@ -76,13 +76,15 @@ output {
 <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
-
+<div id="heading">
+  <span>M</span>essage <span>E</span>diting and <span>A</span>nalysis <span>T</span>ool
+</div>  
 <nav>
+  <input type="text" id="file_path" readonly>
   <button id="choose_file">Choose File</button>
 </nav>
 
-Path: <input type="text" id="file_path" readonly>
-<span>Size: <span id="file_size"></span> bytes</span>
+
 
 <output></output>
 
@@ -106,17 +108,18 @@ Path: <input type="text" id="file_path" readonly>
   </nav>
 </div>
   
-<div id="segmentHover" style="display:none">???</div>
-<div id="segmentInfo" class='info hide'>
-  <div id='segmentId'></div>
-  <div id='segmentName'></div>
-  <div id='segmentDesc' class="info_desc"></div>
+
+<div id="componentHover" style='display:none'>
+  <div id='componentId'>dssad</div>
+  <div id='componentName'>sadsad</div>
+  <div id='componentDataType'>sadsad</div>
+  <div id='componentOpt'>sadsad</div>
 </div>
 
 <script src="js/DB.js"></script>
 <script src="js/File.js"></script>
 <script src="js/View.js"></script>
-<script src="js/DOMHelpers.js"></script>"
+<script src="js/DOMHelpers.js"></script>
 <script src="js/HL7.js"></script>
 <script src="js/HL7_Formatter.js"></script>
 <script src="js/dnd.js"></script>
