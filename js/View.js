@@ -74,11 +74,17 @@ View.init = function() {
   });
 };
 
+View.reset = function() {
+  DOMHelpers.hide("save_message");
+  DOMHelpers.removeClass("msg_segment_wnd", "save_required");
+};
+
 View.loadFileEntry=function(_chosenEntry) {
   chosenEntry = _chosenEntry;
   chosenEntry.file(function(file) {
     File.readAsText(chosenEntry, function(result) {
       HL7.parseMsg(result, function(parsedMessage) {
+        View.reset();
         View.displayMessage(parsedMessage);
       });
     });
