@@ -1,4 +1,9 @@
 var View = {};
+var SAVE=1;
+var SEND=2;
+var OPEN=4;
+var COMPONENT_EDIT=8;
+var SAVE_REQUIRED = 16;
 
 View.init = function() {
   var chooseFileButton = document.querySelector('#choose_file');
@@ -56,8 +61,10 @@ View.init = function() {
     
     DOMHelpers.hide("segmentEdit");
     DOMHelpers.show("msg_segment_wnd");
-    DOMHelpers.show("save_message");
-    DOMHelpers.addClass("msg_segment_wnd", "save_required");
+    DOMHelpers.removeClass("msg_segment_menu", "menu");
+    DOMHelpers.addClass("msg_segment_menu", "save_required");
+    View.setState( SAVE | OPEN );
+    
   });
   
   var saveMessage = document.getElementById("save_message");
@@ -68,15 +75,16 @@ View.init = function() {
       var blob = new Blob([text], {type: 'text/plain'});
       File.writeFileEntry(writableEntry, blob, function(e) {
         DOMHelpers.hide("save_message");
-        DOMHelpers.removeClass("msg_segment_wnd", "save_required");
+        DOMHelpers.removeClass("msg_segment_menu", "save_required");
+        DOMHelpers.addClass("msg_segment_menu", "menu");
       });
     });
   });
 };
 
 View.reset = function() {
-  DOMHelpers.hide("save_message");
-  DOMHelpers.removeClass("msg_segment_wnd", "save_required");
+  DOMHelpers.removeClass("msg_segment_menu", "save_required");
+  DOMHelpers.addClass("msg_segment_menu", "menu");
 };
 
 View.loadFileEntry=function(_chosenEntry) {
@@ -86,12 +94,28 @@ View.loadFileEntry=function(_chosenEntry) {
       HL7.parseMsg(result, function(parsedMessage) {
         View.reset();
         View.displayMessage(parsedMessage);
+        View.setState( SEND | OPEN );
       });
     });
     // Update display.
     //saveFileButton.disabled = false; // allow the user to save the content
     View.displayEntryData(chosenEntry);
   });
+};
+
+View.setState=function(state) {
+  var saveBtn = document.getElementById("save_message");
+  var openBtn = document.getElementById("choose_file");
+  var sendBtn = document.getElementById("send_message");
+  var saveEnabled = state & SAVE;
+  var sendEnabled = state & SEND;
+  var openEnabled = state & OPEN;
+  
+  saveBtn.disabled=!saveEnabled;
+  sendBtn.disabled=!sendEnabled;
+  openBtn.disabled=!openEnabled;
+  
+  
 };
 
 //display each line of file
@@ -194,6 +218,7 @@ View.componentSelectorFactory=function() {
     
     DOMHelpers.show("segmentEdit");
     DOMHelpers.hide("msg_segment_wnd");
+    View.setState(COMPONENT_EDIT);
     
   };
 };

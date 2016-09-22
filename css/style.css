@@ -74,7 +74,16 @@ li.segment:hover {
 #msg_segment_menu {
   margin : 1px;
   padding : 10px;
+  border-radius: 5px;
+  
+}
+
+.menu {
   background: linear-gradient(to right, rgba(105,107,143,1), rgba(255,255,255,0));
+}
+
+.save_required {
+  background: linear-gradient(to right, rgba(189,32,32,1), rgba(255,255,255,0));
 }
 
 #msg_segment_menu li {
@@ -126,10 +135,6 @@ li.segment:hover {
   box-shadow: 0px 0px 5px #FFF;
 }
 
-#save_message {
-  display : none;
-}
-
 .info {
   position: absolute;
   border: 1px solid black;
@@ -162,11 +167,7 @@ li.segment:hover {
   
 }
 
-.save_required {
-  background-color: rgba(241,150,150,0.3);
-  border-radius: 0px 0px 5px 5px;
-  padding: 2px;
-}
+
 
 
 

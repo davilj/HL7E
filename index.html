@@ -14,11 +14,7 @@ nav {
 	-webkit-justify-content: center;
 	-webkit-align-items: center;
 }
-video {
-	width: 640px;
-	height: 480px;
-	background: rgba(0,0,0,0.25);
-}
+
 button {
   display: inline-block;
   background: -webkit-linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
@@ -58,19 +54,6 @@ input, textarea {
 [hidden] {
   display: none;
 }
-textarea {
-  width: 100%;
-  height: 200px;
-  outline: none;
-  padding: 1px;
-  font-size: 14pt;
-  padding: 1em;
-}
-output {
-  text-align: center;
-  padding: 1em;
-  display: block;
-}
 
 </style>
 <link rel="stylesheet" type="text/css" href="css/style.css">
@@ -81,10 +64,11 @@ output {
   <span>M</span>essage <span>E</span>diting and <span>A</span>nalysis <span>T</span>ool
 </div>  
 <nav>
-  <input type="text" id="file_path" readonly>
-  <button id="choose_file">Choose File</button>
+  <button id="choose_file">Open</button>
+  <button id="save_message" disabled>Save</button>
+  <button id="send_message" disabled>Send</button>
 </nav>
-
+<input type="text" id="file_path" readonly>
 
 
 <div id="msg_content"></div>
@@ -92,9 +76,6 @@ output {
 <div id="msg_segment_wnd" style="display:none">
   <ul id="msg_segment_menu"></ul>
   <ul id="msg_segment"></ul>
-  <nav>
-    <button id="save_message">Save Message</button>
-  </nav>
 </div>
 
 <div id="segmentEdit" style="display:none">
@@ -106,7 +87,10 @@ output {
     <button id="save_segment">Save</button><button id="add_component">Add Component</button><button id="cancel_segment">Cancel</button>
   </nav>
 </div>
+
+<div id="sendMessage" style='display:none'>
   
+</div>  
 
 <div id="componentHover" style='display:none'>
   <div id='componentId'>dssad</div>
@@ -114,6 +98,8 @@ output {
   <div id='componentDataType'>sadsad</div>
   <div id='componentOpt'>sadsad</div>
 </div>
+
+
 
 <script src="js/DB.js"></script>
 <script src="js/File.js"></script>
