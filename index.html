@@ -62,14 +62,16 @@ input, textarea {
 <div id="meatIcon"><img src='assets/meat-256.png'/></div>
 <div id="heading">
   <span>M</span>essage <span>E</span>diting and <span>A</span>nalysis <span>T</span>ool
-</div>  
-<nav>
-  <button id="choose_file">Open</button>
-  <button id="save_message" disabled>Save</button>
-  <button id="send_message" disabled>Send</button>
-</nav>
-<input type="text" id="file_path" readonly>
+</div>
 
+<div id="menu_wnd">
+  <nav id="main_nav">
+    <button id="choose_file">Open</button>
+    <button id="save_message" disabled>Save</button>
+    <button id="send_message" disabled>Send</button>
+  </nav>
+  <input type="text" id="file_path" readonly>
+</div>
 
 <div id="msg_content"></div>
 
@@ -88,8 +90,10 @@ input, textarea {
   </nav>
 </div>
 
-<div id="sendMessage" style='display:none'>
-  
+<div id="sendMessage_wnd" style='display:none'>
+    <span><input id="ip"/><input id="port"/></span>
+    <textarea id="msgReport" rows="4" cols="50"></textarea>
+    <button id="sendMsgSend" >Send</button><button id="cancelMsgSend" >Cancel</button>
 </div>  
 
 <div id="componentHover" style='display:none'>
@@ -99,12 +103,17 @@ input, textarea {
   <div id='componentOpt'>sadsad</div>
 </div>
 
-
-
+<script src="js/EventBus.js"></script>
+<script src="js/Messages.js"></script>
 <script src="js/DB.js"></script>
 <script src="js/File.js"></script>
-<script src="js/View.js"></script>
 <script src="js/DOMHelpers.js"></script>
+<script src="js/Network.js"></script>
+<script src="js/MenuBar.js"></script>
+<script src="js/MsgSender.js"></script>
+<script src="js/MsgSegment.js"></script>
+<script src="js/View.js"></script>
+
 <script src="js/HL7.js"></script>
 <script src="js/HL7_Formatter.js"></script>
 <script src="js/dnd.js"></script>
