@@ -38,7 +38,7 @@ MenuBar.Init=function() {
   sendMessage.addEventListener('click', function() {
     //MsgSender.show("sendMessage_wnd");
     DOMHelpers.hide("main_nav");
-    EventBus.publish(Messages.SendingMsg,Messages.Start);
+    EventBus.publish(Messages.SendingMsg,Messages.StartSending);
   });
   
   EventBus.subscribe(Messages.MenuBar, MenuBar.messageHandler);

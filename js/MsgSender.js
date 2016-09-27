@@ -9,15 +9,20 @@ MsgSender.Init=function() {
   var sendBtn = document.getElementById("sendMsgSend");
   
   cancelBtn.addEventListener('click', function() {
-    MsgSender.hide();
-    EventBus.publish('msgSender','cancel');
+    DOMHelpers.hide("sendMessage_wnd");
+    EventBus.publish(Messages.SendingMsg,Messages.CanselSending);
   });
   
   sendBtn.addEventListener('click', function() {
     var ip = input_IP.value;
     var port = input_Port.value;
-    Network.setConnection(ip, port);
+    
     msgReport.value=("Send msg to " + ip + ":" + port);
+    var msg = {};
+    msg['type']=Messages.SendMsg;
+    msg['ip']=ip;
+    msg['port']=port;
+    EventBus.publish(Messages.SendingMsg, msg);
   });
   
   //eventbus listener
@@ -25,7 +30,7 @@ MsgSender.Init=function() {
 };
 
 MsgSender.messageHandler=function(msg) {
-  if (msg==Messages.Start) {
+  if (msg==Messages.StartSending) {
     DOMHelpers.show("sendMessage_wnd");
   }
 };

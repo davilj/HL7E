@@ -1,3 +1,5 @@
+
+
 var View = {};
 
 View.init = function() {
@@ -25,11 +27,22 @@ View.init = function() {
     }
   });
   
-  
-  var cancel = document.getElementById("cancel_segment");
-  cancel.addEventListener('click', function() {
-      DOMHelpers.hide("segmentEdit");
-      DOMHelpers.show("msg_segment_wnd");
+  //Sending messages
+  EventBus.subscribe(Messages.SendingMsg, function(msg) {
+    var type = msg['type'];
+    if (type==Messages.SendMsg) {
+      var ip = msg['ip'];
+      var port = msg['port'];
+      Network.setConnection(ip, port);
+      var text = HL7.toText(View.parsedMessage);
+      Network.sentMessage(text, function(recv) {
+        console.log(recv);
+      }, function(err) {
+        console.log(err);
+      });
+      
+    }
+    
   });
   
   var addComponent = document.getElementById("add_component");
@@ -38,8 +51,6 @@ View.init = function() {
     var inputComponent = document.createElement('input');
     tr.appendChild(inputComponent);
   });
-  
-  
 };
 
 View.reset = function() {
@@ -138,8 +149,6 @@ View.formatFieldInDetail = function(tableRow, name, index , components) {
     tableRow.appendChild(DOMHelpers.addCell(components[compIndex], className));
   }
 };
-
-
 
 View.componentSelectorFactory=function() {
   

@@ -19,5 +19,10 @@
           "text/*"
       ]
     }
+  },
+  "sockets": {
+    "tcp": {
+      "connect": "*:*"
+    }
   }
 }

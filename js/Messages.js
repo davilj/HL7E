@@ -1,7 +1,9 @@
 
 var Messages = {
   SendingMsg: "topic_SendingMsg",
-  Start: "topic_SendingMsg-start",
+  StartSending: "topic_SendingMsg-start",
+  CanselSending: "topic_SendingMsg-cancel",
+  SendMsg: "topic_SendingMsg-send",
   
   MenuBar: "topic_MenuBar",
   MsgSaved: "topic_MenuBar-msgSaved",

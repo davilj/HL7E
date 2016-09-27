@@ -2,6 +2,8 @@ var MsgSegment = {};
 
 MsgSegment.Init=function() {
   var saveSegment = document.getElementById("save_segment");
+  var cancel = document.getElementById("cancel_segment");
+  
   saveSegment.addEventListener('click', function() {
     var selected = View.selectedField;
     var info = selected.split("-");
@@ -29,4 +31,19 @@ MsgSegment.Init=function() {
     DOMHelpers.removeClass("msg_segment_menu", "menu");
     DOMHelpers.addClass("msg_segment_menu", "save_required");
   });
+  
+  cancel.addEventListener('click', function() {
+      DOMHelpers.hide("segmentEdit");
+      DOMHelpers.show("msg_segment_wnd");
+  });
+  
+  //eventbus listener
+  EventBus.subscribe(Messages.SendingMsg,MsgSegment.messageHandler);
 };
+
+MsgSegment.messageHandler=function(msg) {
+  if (msg==Messages.Start) {
+    DOMHelpers.show("sendMessage_wnd");
+  }
+};
+
