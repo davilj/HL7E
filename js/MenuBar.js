@@ -18,8 +18,8 @@ MenuBar.Init=function() {
       // use local storage to retain access to this file
       chrome.storage.local.set({'chosenFile': chrome.fileSystem.retainEntry(theEntry)});
       //View.loadFileEntry(theEntry);
-      var msg = {'type': 'open', 'file': theEntry};
-      EventBus.publish(Messages.MsgDisplay,msg);
+      var msg = {'type': Messages.MsgDisplay_open, 'file': theEntry};
+      EventBus.publish(Messages.MsgDisplay , msg);
     });
   });
   

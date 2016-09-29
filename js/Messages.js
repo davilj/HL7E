@@ -9,6 +9,12 @@ var Messages = {
   MsgSaved: "topic_MenuBar-msgSaved",
   MsgOpened: "topic_MenuBar-msgOpened",
   
-  MsgDisplay: "topic_MsgDisplay"
+  MsgDisplay: "topic_MsgDisplay",
+  MsgDisplay_open: "topic_MsgDisplay-open",
+  MsgDisplay_display: "topic_MsgDisplay-display",
+  MsgDisplay_hide: "topic_MsgDisplay-hide",
+  
+  MsgView: "topic_MsgView",
+  MsgViewOpened: "topic_MsgView-msgOpened"
   
 };
