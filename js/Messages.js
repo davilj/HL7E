@@ -8,6 +8,7 @@ var Messages = {
   MenuBar: "topic_MenuBar",
   MsgSaved: "topic_MenuBar-msgSaved",
   MsgOpened: "topic_MenuBar-msgOpened",
+  MsgSavedRequired: "topic_MenuBar-msgSavedReq",
   
   MsgDisplay: "topic_MsgDisplay",
   MsgDisplay_open: "topic_MsgDisplay-open",
@@ -16,5 +17,7 @@ var Messages = {
   
   MsgView: "topic_MsgView",
   MsgViewOpened: "topic_MsgView-msgOpened"
+  
+  
   
 };

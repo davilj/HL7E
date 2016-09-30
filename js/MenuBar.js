@@ -57,4 +57,8 @@ MenuBar.messageHandler=function(msg) {
     openMessageBtn.disabled=false;
     sendMessageBtn.disabled=false;
   }
+  
+  if (msg==Messages.MsgSavedRequired) {
+    document.getElementById("save_message").disabled=false;
+  }
 };

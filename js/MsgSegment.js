@@ -5,7 +5,7 @@ MsgSegment.Init=function() {
   var cancel = document.getElementById("cancel_segment");
   
   saveSegment.addEventListener('click', function() {
-    var selected = View.selectedField;
+    var selected = MsgSegment.selectedField;
     var info = selected.split("-");
     var segmentIndex = info[0];
     var segmentName = info[1];
@@ -23,13 +23,14 @@ MsgSegment.Init=function() {
     var trId = selected;
     var tr = document.getElementById(trId);
     DOMHelpers.removeChildren(trId);
-    View.formatFieldInDetail(tr, segmentName, fieldIndex , newComponents);
-    View.parsedMessage.segments[segmentIndex].fields[parseInt(fieldIndex)-1]=newComponents;
+    MsgSegment.formatFieldInDetail(tr, segmentName, fieldIndex , newComponents);
+    MsgSegment.parsedMessage.segments[segmentIndex].fields[parseInt(fieldIndex)-1]=newComponents;
     
     DOMHelpers.hide("segmentEdit");
     DOMHelpers.show("msg_segment_wnd");
     DOMHelpers.removeClass("msg_segment_menu", "menu");
     DOMHelpers.addClass("msg_segment_menu", "save_required");
+    EventBus.publish(Messages.MenuBar, Messages.MsgSavedRequired);
   });
   
   cancel.addEventListener('click', function() {
@@ -44,11 +45,10 @@ MsgSegment.Init=function() {
     var type = msg['type'];
     if (type==Messages.MsgDisplay_display) {
       var parsedMessage = msg['parsedMessage'];
+      DOMHelpers.removeChildren("msg_segment_menu");
+      DOMHelpers.removeChildren("msg_segment");
       MsgSegment.loadSegments(parsedMessage);
       DOMHelpers.hide("msg_segment_wnd");
-      //DOMHelpers.removeChildren("msg_segment");
-      //DOMHelpers.removeChildren("msg_segment_menu");
-      //DOMHelpers.removeChildren("msg_segment");
     }
   });
 };
@@ -72,6 +72,7 @@ MsgSegment.loadSegments=function(parsedMessage) {
     //liElement.addEventListener("mouseenter", View.menuMouseEnterFacotry(segment));
     //liElement.addEventListener("mouseleave", View.menuMouseLeaveFacotry());
     segmentMenu.appendChild(liElement);
+    segmentMenu.className="menu";
     
     //segemntDetail
     var msg_segment = document.getElementById("msg_segment");
