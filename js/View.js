@@ -5,8 +5,8 @@ var View = {};
 View.init = function() {
   MsgSender.Init();
   MenuBar.Init();
-  MsgSegment.Init();
   MsgView.Init();
+  MsgSegment.Init();
   
   //router, display message
   EventBus.subscribe(Messages.MsgDisplay,function(msg) {
@@ -17,7 +17,10 @@ View.init = function() {
       entry.file(function(chosenEntry) {
         File.readAsText(entry, function(readMsg){
           HL7.parseMsg(readMsg, function(parsedMessage){
-              var msg = {'type': Messages.MsgDisplay_display, 'parsedMessage': parsedMessage};
+              var msg = {
+                'type': Messages.MsgDisplay_display, 
+                'parsedMessage': parsedMessage
+              };
               EventBus.publish(Messages.MsgDisplay , msg);
             });
         });
@@ -60,12 +63,6 @@ View.init = function() {
     tr.appendChild(inputComponent);
   });
 };
-
-
-
-
-
-
 
 
 //display selected file

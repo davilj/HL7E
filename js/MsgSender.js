@@ -27,6 +27,7 @@ MsgSender.Init=function() {
   
   //eventbus listener
   EventBus.subscribe(Messages.SendingMsg,MsgSender.messageHandler);
+  
 };
 
 MsgSender.messageHandler=function(msg) {

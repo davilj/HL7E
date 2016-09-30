@@ -4,6 +4,7 @@ MenuBar.Init=function() {
   var chooseFileButton = document.getElementById('choose_file');
   var saveMessage = document.getElementById("save_message");
   var sendMessage = document.getElementById("send_message");
+  var fileLoc = document.getElementById("file_path");
   
   chooseFileButton.addEventListener('click', function(e) {
     var accepts = [{
@@ -12,14 +13,17 @@ MenuBar.Init=function() {
     }];
     chrome.fileSystem.chooseEntry({type: 'openFile', accepts: accepts}, function(theEntry) {
       if (!theEntry) {
-        output.textContent = 'No file selected.';
+        fileLoc.value = 'No file selected.';
         return;
+      } else {
+        fileLoc.value = theEntry.fullPath;
       }
       // use local storage to retain access to this file
       chrome.storage.local.set({'chosenFile': chrome.fileSystem.retainEntry(theEntry)});
       //View.loadFileEntry(theEntry);
       var msg = {'type': Messages.MsgDisplay_open, 'file': theEntry};
       EventBus.publish(Messages.MsgDisplay , msg);
+      document.getElementById("send_message").disabled=false;
     });
   });
   
@@ -34,15 +38,12 @@ MenuBar.Init=function() {
     });
   });
   
-  
   sendMessage.addEventListener('click', function() {
     //MsgSender.show("sendMessage_wnd");
     DOMHelpers.hide("main_nav");
     EventBus.publish(Messages.SendingMsg,Messages.StartSending);
   });
-  
   EventBus.subscribe(Messages.MenuBar, MenuBar.messageHandler);
-  
 };
 
 
