@@ -7,7 +7,9 @@ Network.setConnection=function(ip, port) {
 
 Network.createCallBack=function(createInfo) {
   if (chrome.runtime.lastError) {
-      error('Unable to create socket: ' + chrome.runtime.lastError.message);
+      var error = 'Unable to create socket: ' + chrome.runtime.lastError.message;
+      console.log(error);
+      Network.errorHandler(error);
     }
 
     Network._socketId = createInfo.socketId;
@@ -16,7 +18,9 @@ Network.createCallBack=function(createInfo) {
 
 Network.onConnectionCompleted=function(resultCode) {
   if (resultCode < 0) {
-      console.log('Unable to connect to server');
+      var error = 'Unable to connect to server';
+      console.log(error);
+      Network.errorHandler(error);
       return;
   }
   chrome.sockets.tcp.onReceive.addListener(function(info) {
@@ -46,6 +50,7 @@ Network.onConnectionCompleted=function(resultCode) {
         Network.toString(a, function(aString) {
           console.log(aString);  
         });
+        Network.successHandler(a);
       });
   });
 };
@@ -71,6 +76,8 @@ Network.toString = function(buf, callback) {
 Network.sentMessage=function(message, messageSendSuccess, messageSendError) {
   var _socketId;
   Network.message = message;
+  Network.successHandler = messageSendSuccess;
+  Network.errorHandler = messageSendError;
   //create socket
   chrome.sockets.tcp.create({},Network.createCallBack);
 };

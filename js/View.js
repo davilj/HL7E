@@ -17,6 +17,7 @@ View.init = function() {
       entry.file(function(chosenEntry) {
         File.readAsText(entry, function(readMsg){
           HL7.parseMsg(readMsg, function(parsedMessage){
+              View.parsedMessage=parsedMessage;
               var msg = {
                 'type': Messages.MsgDisplay_display, 
                 'parsedMessage': parsedMessage
@@ -26,9 +27,14 @@ View.init = function() {
         });
       });
     }
-    
-    if (type=='save') {
-      var blob=msg['data'];
+  });
+  
+  EventBus.subscribe(Messages.MsgSave, function(msg) {
+     var type = msg['type'];
+    if (type==Messages.MsgSave_save) {
+      var text = HL7.toText(View.parsedMessage);
+      var blob = new Blob([text], {type: 'text/plain'});
+      
       var writableEntry=msg['file'];
       File.writeFileEntry(writableEntry, blob, function(e) {
         //DOMHelpers.hide("save_message");
@@ -37,11 +43,15 @@ View.init = function() {
       });
     }
   });
-  
+    
   //router Sending messages
   EventBus.subscribe(Messages.SendingMsg, function(msg) {
-    var type = msg['type'];
-    if (type==Messages.SendMsg) {
+    if (msg.name==MenuBar.Messages.PressSendMsg.name) {
+      EventBus.publish(MenuBar.Messages, MenuBar.Messages.Hide);
+      EventBus.publish(MsgSender.Messages, MsgSender.Messages.Show);
+    }
+    
+    if (msg.name==MsgSender.Messages.Send.name) {
       var ip = msg['ip'];
       var port = msg['port'];
       Network.setConnection(ip, port);
@@ -49,11 +59,11 @@ View.init = function() {
       Network.sentMessage(text, function(recv) {
         console.log(recv);
       }, function(err) {
-        console.log(err);
+        var msg = MsgSender.Messages.ErrorMsg;
+        msg['error']=err;
+        EventBus.publish(MsgSender.Messages, msg);
       });
-      
     }
-    
   });
   
   var addComponent = document.getElementById("add_component");

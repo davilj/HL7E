@@ -39,7 +39,15 @@ MsgSegment.Init=function() {
   });
   
   //eventbus listener
-  EventBus.subscribe(Messages.SendingMsg,MsgSegment.messageHandler);
+  EventBus.subscribe(Messages.SendingMsg, function(msg){
+    if (msg.name==MsgSegment.Messages.Show.name) {
+      DOMHelpers.show("msg_segment_wnd");
+    }
+    if (msg.name==MsgSegment.Messages.Hide.name) {
+      DOMHelpers.hide("msg_segment_wnd");
+    }
+    
+  });
   
   EventBus.subscribe(Messages.MsgDisplay, function(msg) {
     var type = msg['type'];
@@ -150,13 +158,6 @@ MsgSegment.menuClickFactory=function(visibleIndex) {
   };
 };
 
-
-MsgSegment.messageHandler=function(msg) {
-  if (msg==Messages.Start) {
-    DOMHelpers.show("sendMessage_wnd");
-  }
-};
-
 MsgSegment.formatSegmentInDetail = function(segmentIndex) {
   var segment = MsgSegment.parsedMessage.segments[segmentIndex];
   var handleMouseOver=function() {
@@ -251,4 +252,10 @@ MsgSegment.menuMouseLeaveFacotry=function() {
     DOMHelpers.hide("componentHover");
   };
 };
+
+MsgSegment.Messages={
+    'Show':{'name':'MsgSegment.Show'},
+    'Hide':{'name':'MsgSegment.Hide'}
+};
+
 
