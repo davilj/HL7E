@@ -57,7 +57,9 @@ View.init = function() {
       Network.setConnection(ip, port);
       var text = HL7.toText(View.parsedMessage);
       Network.sentMessage(text, function(recv) {
-        console.log(recv);
+        var msg = MsgSender.Messages.SuccessMsg;
+        msg['feedback']=recv;
+        EventBus.publish(MsgSender.Messages, msg);
       }, function(err) {
         var msg = MsgSender.Messages.ErrorMsg;
         msg['error']=err;

@@ -159,20 +159,37 @@ li.segment:hover {
 
 #segmentEdit_components input {
   display : inline;
+  border-radius: 5px;
 }
 
 #segmentEdit_fieldName {
   font-size : x-large;
   font-weight: bold;
-  
 }
 
 #msgReport {
   border-radius: 5px;
-  background-color: #e9eaec;
+  background-color: #ffffff;
   margin-top: 5px;
-  padding : 5px;
+  margin-bottom: 5px;
+  padding: 5px;
+  display : none;
 }
+
+#sendMsg_input input {
+  display: inline;
+  width: auto;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+#sendMessage_wnd {
+  width: '80%';
+  padding: 5px;
+  background-color: #e9eaec;
+  border-radius: 5px;
+}
+
 
 
 

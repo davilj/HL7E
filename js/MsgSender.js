@@ -11,9 +11,12 @@ MsgSender.Init=function() {
   var reset=function() {
     input_IP.value='';
     input_Port.value='';
+    msgReport.innerHTML='';
+    document.getElementById("msgReport").style.display='none';
   };
   
   var add2Report=function(msg) {
+    document.getElementById("msgReport").style.display='block';
     var currentMsg = msgReport.innerHTML;
     currentMsg = currentMsg + "<br>";
     var time = new Date();
@@ -41,7 +44,8 @@ MsgSender.Init=function() {
   
   cancelBtn.addEventListener('click', function() {
     reset();
-    EventBus.publish(Messages.SendingMsg,Messages.CanselSending);
+    document.getElementById("sendMessage_wnd").style.display='none';
+    EventBus.publish(Messages.SendingMsg,MsgSender.Messages.Cancel);
   });
   
   sendBtn.addEventListener('click', function() {
@@ -61,6 +65,7 @@ MsgSender.Init=function() {
       DOMHelpers.show("sendMessage_wnd");
     }
     if (msg.name==MsgSender.Messages.Hide.name || msg.name==MsgSender.Messages.Cancel.name) {
+      DOMHelpers.hide("msgReport");
       DOMHelpers.hide("sendMessage_wnd");
     }
     if (msg.name==MsgSender.Messages.ErrorMsg.name) {
@@ -68,8 +73,10 @@ MsgSender.Init=function() {
       add2Report(msg.error);
     }
     
+    if (msg.name==MsgSender.Messages.SuccessMsg.name) {
+      add2Report(msg.feedback);
+    }
   });
-  
 };
 
 MsgSender.Messages={
@@ -77,5 +84,6 @@ MsgSender.Messages={
     'Hide':{'name':'MsgSender.Hide'},
     'Cancel':{'name':"MsgSender.Cancel"},
     'Send':{'name':'MsgSender.Send'},
-    'ErrorMsg':{'name':'MsgSender.Error'}
+    'ErrorMsg':{'name':'MsgSender.Error'},
+    'SuccessMsg':{'name':'MsgSender.Success'}
 };
