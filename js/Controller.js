@@ -1,12 +1,8 @@
 
 
-var View = {};
+var Controller = {};
 
-View.init = function() {
-  MsgSender.Init();
-  MenuBar.Init();
-  MsgView.Init();
-  MsgSegment.Init();
+Controller.init = function() {
   
   //router, display message
   EventBus.subscribe(Messages.MsgDisplay,function(msg) {
@@ -17,7 +13,7 @@ View.init = function() {
       entry.file(function(chosenEntry) {
         File.readAsText(entry, function(readMsg){
           HL7.parseMsg(readMsg, function(parsedMessage){
-              View.parsedMessage=parsedMessage;
+              Controller.parsedMessage=parsedMessage;
               var msg = {
                 'type': Messages.MsgDisplay_display, 
                 'parsedMessage': parsedMessage
@@ -32,7 +28,7 @@ View.init = function() {
   EventBus.subscribe(Messages.MsgSave, function(msg) {
      var type = msg['type'];
     if (type==Messages.MsgSave_save) {
-      var text = HL7.toText(View.parsedMessage);
+      var text = HL7.toText(Controller.parsedMessage);
       var blob = new Blob([text], {type: 'text/plain'});
       
       var writableEntry=msg['file'];
@@ -51,11 +47,15 @@ View.init = function() {
       EventBus.publish(MsgSender.Messages, MsgSender.Messages.Show);
     }
     
+    if (msg.name==MsgSender.Messages.Cancel.name) {
+      EventBus.publish(MenuBar.Messages, MenuBar.Messages.Show);
+    }
+    
     if (msg.name==MsgSender.Messages.Send.name) {
       var ip = msg['ip'];
       var port = msg['port'];
       Network.setConnection(ip, port);
-      var text = HL7.toText(View.parsedMessage);
+      var text = HL7.toText(Controller.parsedMessage);
       Network.sentMessage(text, function(recv) {
         var msg = MsgSender.Messages.SuccessMsg;
         msg['feedback']=recv;
@@ -78,7 +78,7 @@ View.init = function() {
 
 
 //display selected file
-View.displayEntryData=function(theEntry) {
+Controller.displayEntryData=function(theEntry) {
   if (theEntry.isFile) {
     chrome.fileSystem.getDisplayPath(theEntry, function(path) {
       document.querySelector('#file_path').value = path;

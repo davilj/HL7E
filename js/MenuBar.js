@@ -67,9 +67,14 @@ MenuBar.Init=function() {
     if (msg.name==MenuBar.Messages.Hide.name) {
       DOMHelpers.hide("menu_wnd");
     }
+    
+    if (msg.name==MenuBar.Messages.Show.name) {
+      DOMHelpers.show("menu_wnd");
+    }
   });
 };
 
 MenuBar.Messages={};
 MenuBar.Messages.PressSendMsg={name:"MenuBar.PressMsg"};
 MenuBar.Messages.Hide={name:"MenuBar.Hide"};
+MenuBar.Messages.Show={name:"MenuBar.Show"};
