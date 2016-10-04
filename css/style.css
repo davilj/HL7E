@@ -30,11 +30,12 @@ li.segment {
   padding : 0px 0px 10px 2px;
   font-size: x-small;
   transition: transform 1s;
+  
 }
 
 li.segment:hover {
   box-shadow: 0px 0px 5px #888888;
-  transform : translate(0px,-2px);
+  transform : translate(-2px,-2px);
   border : 1px solid #EEE ;
   border-radius: 3px;
   

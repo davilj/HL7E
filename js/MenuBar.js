@@ -29,7 +29,8 @@ MenuBar.Init=function() {
       // use local storage to retain access to this file
       chrome.storage.local.set({'chosenFile': chrome.fileSystem.retainEntry(theEntry)});
       //View.loadFileEntry(theEntry);
-      var msg = {'type': Messages.MsgDisplay_open, 'file': theEntry};
+      var msg = MenuBar.Messages.LoadMsg;
+      msg['file']=theEntry;
       EventBus.publish(Messages.MsgDisplay , msg);
       document.getElementById("send_message").disabled=false;
     });
@@ -76,5 +77,6 @@ MenuBar.Init=function() {
 
 MenuBar.Messages={};
 MenuBar.Messages.PressSendMsg={name:"MenuBar.PressMsg"};
+MenuBar.Messages.LoadMsg={name:"MenuBar.LoadMsg"};
 MenuBar.Messages.Hide={name:"MenuBar.Hide"};
 MenuBar.Messages.Show={name:"MenuBar.Show"};

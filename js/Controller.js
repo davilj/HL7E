@@ -6,19 +6,19 @@ Controller.init = function() {
   
   //router, display message
   EventBus.subscribe(Messages.MsgDisplay,function(msg) {
-    var type = msg['type'];
-    var entry=msg['file'];
-    
-    if (type==Messages.MsgDisplay_open) {
+    if (msg.name==MenuBar.Messages.LoadMsg.name) {
+      var entry=msg['file'];
       entry.file(function(chosenEntry) {
         File.readAsText(entry, function(readMsg){
           HL7.parseMsg(readMsg, function(parsedMessage){
               Controller.parsedMessage=parsedMessage;
-              var msg = {
-                'type': Messages.MsgDisplay_display, 
-                'parsedMessage': parsedMessage
-              };
-              EventBus.publish(Messages.MsgDisplay , msg);
+              var msg = MsgView.Messages.LoadMsg;
+              msg.parsedMessage=parsedMessage;
+              EventBus.publish(MsgView.Messages , msg);
+              
+              var eMsg = MsgSegment.Messages.LoadMsg;
+              eMsg.parsedMessage=parsedMessage;
+              EventBus.publish(MsgSegment.Messages , eMsg);
             });
         });
       });
@@ -45,6 +45,8 @@ Controller.init = function() {
     if (msg.name==MenuBar.Messages.PressSendMsg.name) {
       EventBus.publish(MenuBar.Messages, MenuBar.Messages.Hide);
       EventBus.publish(MsgSender.Messages, MsgSender.Messages.Show);
+      EventBus.publish(MsgView.Messages , MsgView.Messages.Show);
+      EventBus.publish(MsgSegment.Messages , MsgSegment.Messages.Hide);
     }
     
     if (msg.name==MsgSender.Messages.Cancel.name) {

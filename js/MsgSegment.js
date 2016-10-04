@@ -46,16 +46,21 @@ MsgSegment.Init=function() {
     if (msg.name==MsgSegment.Messages.Hide.name) {
       DOMHelpers.hide("msg_segment_wnd");
     }
-    
   });
   
-  EventBus.subscribe(Messages.MsgDisplay, function(msg) {
-    var type = msg['type'];
-    if (type==Messages.MsgDisplay_display) {
+  EventBus.subscribe(MsgSegment.Messages, function(msg) {
+    
+    if (msg.name==MsgSegment.Messages.LoadMsg.name) {
       var parsedMessage = msg['parsedMessage'];
       DOMHelpers.removeChildren("msg_segment_menu");
       DOMHelpers.removeChildren("msg_segment");
       MsgSegment.loadSegments(parsedMessage);
+      DOMHelpers.hide("msg_segment_wnd");
+    }
+    if (msg.name==MsgSegment.Messages.Show.name) {
+      DOMHelpers.show("msg_segment_wnd");
+    }
+    if (msg.name==MsgSegment.Messages.Hide.name) {
       DOMHelpers.hide("msg_segment_wnd");
     }
   });
@@ -257,5 +262,6 @@ MsgSegment.Messages={
     'Show':{'name':'MsgSegment.Show'},
     'Hide':{'name':'MsgSegment.Hide'}
 };
+MsgSegment.Messages.LoadMsg={'name':'MsgSegment.LoadMsg'};
 
 
