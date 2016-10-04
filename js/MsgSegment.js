@@ -27,25 +27,19 @@ MsgSegment.Init=function() {
     MsgSegment.parsedMessage.segments[segmentIndex].fields[parseInt(fieldIndex)-1]=newComponents;
     
     DOMHelpers.hide("segmentEdit");
+    
     DOMHelpers.show("msg_segment_wnd");
     DOMHelpers.removeClass("msg_segment_menu", "menu");
     DOMHelpers.addClass("msg_segment_menu", "save_required");
-    EventBus.publish(Messages.MenuBar, Messages.MsgSavedRequired);
+    
+    var msg = MsgSegment.Messages.MsgEdited;
+    msg['updatedMsg']=MsgSegment.parsedMessage;
+    EventBus.publish(Messages.MsgSave, msg);
   });
   
   cancel.addEventListener('click', function() {
       DOMHelpers.hide("segmentEdit");
       DOMHelpers.show("msg_segment_wnd");
-  });
-  
-  //eventbus listener
-  EventBus.subscribe(Messages.SendingMsg, function(msg){
-    if (msg.name==MsgSegment.Messages.Show.name) {
-      DOMHelpers.show("msg_segment_wnd");
-    }
-    if (msg.name==MsgSegment.Messages.Hide.name) {
-      DOMHelpers.hide("msg_segment_wnd");
-    }
   });
   
   EventBus.subscribe(MsgSegment.Messages, function(msg) {
@@ -263,5 +257,6 @@ MsgSegment.Messages={
     'Hide':{'name':'MsgSegment.Hide'}
 };
 MsgSegment.Messages.LoadMsg={'name':'MsgSegment.LoadMsg'};
+MsgSegment.Messages.MsgEdited={'name':'MsgSegment.MsgEdited'};
 
 

@@ -26,14 +26,17 @@ Controller.init = function() {
   });
   
   EventBus.subscribe(Messages.MsgSave, function(msg) {
-     var type = msg['type'];
-    if (type==Messages.MsgSave_save) {
+    if (msg.name==MsgSegment.Messages.MsgEdited.name) {
+      Controller.parsedMessage=msg.updatedMsg;
+      EventBus.publish(MenuBar.Messages, MenuBar.Messages.SaveRequired);
+      
+    }
+    if (msg.name==MenuBar.Messages.SaveMsg.name) {
       var text = HL7.toText(Controller.parsedMessage);
       var blob = new Blob([text], {type: 'text/plain'});
       
       var writableEntry=msg['file'];
       File.writeFileEntry(writableEntry, blob, function(e) {
-        //DOMHelpers.hide("save_message");
         DOMHelpers.removeClass("msg_segment_menu", "save_required");
         DOMHelpers.addClass("msg_segment_menu", "menu");
       });
@@ -42,7 +45,7 @@ Controller.init = function() {
     
   //router Sending messages
   EventBus.subscribe(Messages.SendingMsg, function(msg) {
-    if (msg.name==MenuBar.Messages.PressSendMsg.name) {
+    if (msg.name==MenuBar.Messages.SendMsg.name) {
       EventBus.publish(MenuBar.Messages, MenuBar.Messages.Hide);
       EventBus.publish(MsgSender.Messages, MsgSender.Messages.Show);
       EventBus.publish(MsgView.Messages , MsgView.Messages.Show);

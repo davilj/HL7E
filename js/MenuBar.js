@@ -39,29 +39,24 @@ MenuBar.Init=function() {
   saveMessage.addEventListener('click', function() {
     var config = {type: 'saveFile', suggestedName: document.querySelector('#file_path').value};
     chrome.fileSystem.chooseEntry(config, function(writableEntry) {
-      var msg = {'type': Messages.MsgSave_save, 'file': writableEntry };
-      //'data': blob };
-      EventBus.publish(Messages.MsgSave, msg);
-      
+      var msg = MenuBar.Messages.SaveMsg;
+      msg['file']=writableEntry;
+     
+     // All of Chrome API is asynchronous! Use callbacks:
+      chrome.fileSystem.getDisplayPath(writableEntry, function(path) {
+        document.querySelector('#file_path').value = path;
+      });
+     EventBus.publish(Messages.MsgSave, msg);
     });
   });
   
   sendMessage.addEventListener('click', function() {
-    EventBus.publish(Messages.SendingMsg,MenuBar.Messages.PressSendMsg);
+    EventBus.publish(Messages.SendingMsg,MenuBar.Messages.SendMsg);
   });
   
   EventBus.subscribe(MenuBar.Messages, function(msg){
-    if (msg==Messages.MsgSaved || msg==Messages.MsgOpened) {
-      var saveMessageBtn = document.getElementById("save_message");
-      var openMessageBtn = document.getElementById("choose_file");
-      var sendMessageBtn = document.getElementById("send_message");
     
-      saveMessageBtn.disabled=false;
-      openMessageBtn.disabled=false;
-      sendMessageBtn.disabled=false;
-    }
-  
-    if (msg==Messages.MsgSavedRequired) {
+    if (msg.name==MenuBar.Messages.SaveRequired.name) {
       document.getElementById("save_message").disabled=false;
     }
     
@@ -76,7 +71,9 @@ MenuBar.Init=function() {
 };
 
 MenuBar.Messages={};
-MenuBar.Messages.PressSendMsg={name:"MenuBar.PressMsg"};
+MenuBar.Messages.SendMsg={name:"MenuBar.SendMsg"};
+MenuBar.Messages.SaveMsg={name:"MenuBar.SaveMsg"};
+MenuBar.Messages.SaveRequired={name:"MenuBar.SaveRequired"};
 MenuBar.Messages.LoadMsg={name:"MenuBar.LoadMsg"};
 MenuBar.Messages.Hide={name:"MenuBar.Hide"};
 MenuBar.Messages.Show={name:"MenuBar.Show"};
